@@ -1,0 +1,116 @@
+Property_ID,Property,Account ID,Accounts,Date,Month,Year,Quarter,Beginning Balance,Debit,Credit,Ending Balance,Class,Summary Grouping,FS
+1001,1340 Burlington LLC,1110-0000,Operating Cash,2024-12-31,December,2024,Q4,238830.02,0.0,38102.71,200727.31,Asset,Cash and cash equivalent,Balance Sheet
+1001,1340 Burlington LLC,1620-0000,Land,2024-12-31,December,2024,Q4,85000.0,0.0,0.0,85000.0,Asset,Non-Current Asset,Balance Sheet
+1001,1340 Burlington LLC,1630-0000,Buildings,2024-12-31,December,2024,Q4,1017139.0,0.0,0.0,1017139.0,Asset,Non-Current Asset,Balance Sheet
+1001,1340 Burlington LLC,1640-0000,Furniture and Fixtures,2024-12-31,December,2024,Q4,160000.0,0.0,0.0,160000.0,Asset,Non-Current Asset,Balance Sheet
+1001,1340 Burlington LLC,1670-0000,Land Improvements,2024-12-31,December,2024,Q4,50000.0,0.0,0.0,50000.0,Asset,Non-Current Asset,Balance Sheet
+1001,1340 Burlington LLC,1687-0000,Loan Fees,2024-12-31,December,2024,Q4,8023.64,0.0,0.0,8023.64,Asset,Non-Current Asset,Balance Sheet
+1001,1340 Burlington LLC,1688-0000,Amortized Lease Commission,2024-12-31,December,2024,Q4,45000.0,0.0,0.0,45000.0,Asset,Non-Current Asset,Balance Sheet
+1001,1340 Burlington LLC,1730-0000,A/D - Buildings,2024-12-31,December,2024,Q4,-103235.07,0.0,2173.42,-105408.49,Asset,Contra Asset,Balance Sheet
+1001,1340 Burlington LLC,1740-0000,A/D - Furniture and Fixtures,2024-12-31,December,2024,Q4,-160000.0,0.0,0.0,-160000.0,Asset,Contra Asset,Balance Sheet
+1001,1340 Burlington LLC,1770-0000,A/D - Land Improvments,2024-12-31,December,2024,Q4,-50000.0,0.0,0.0,-50000.0,Asset,Contra Asset,Balance Sheet
+1001,1340 Burlington LLC,1787-0000,A/A - Loan Fees,2024-12-31,December,2024,Q4,-4584.75,0.0,95.54,-4680.29,Asset,Contra Asset,Balance Sheet
+1001,1340 Burlington LLC,1788-0000,A/A - Lease Commissions,2024-12-31,December,2024,Q4,-24108.85,0.0,535.72,-24644.57,Asset,Contra Asset,Balance Sheet
+1001,1340 Burlington LLC,2250-0000,Tenant Deposits,2024-12-31,December,2024,Q4,-15000.0,0.0,0.0,-15000.0,Liabilities,Liabilities,Balance Sheet
+1001,1340 Burlington LLC,2510-0000,Mortgage Principal,2024-12-31,December,2024,Q4,-984899.65,3743.67,0.0,-981155.98,Liabilities,Liabilities,Balance Sheet
+1001,1340 Burlington LLC,3500-0001,Owner Equity - Andrew Danner,2024-12-31,December,2024,Q4,-111725.74,0.0,0.0,-111725.74,Equity,Equity,Balance Sheet
+1001,1340 Burlington LLC,3500-0002,Owner Equity - Alex Danner,2024-12-31,December,2024,Q4,16094.26,0.0,0.0,16094.26,Equity,Equity,Balance Sheet
+1001,1340 Burlington LLC,3500-0003,Owner Equity - Sanders Industries,2024-12-31,December,2024,Q4,-64354.31,0.0,0.0,-64354.31,Equity,Equity,Balance Sheet
+1001,1340 Burlington LLC,3800-0000,Retained Earnings,2024-12-31,December,2024,Q4,0.0,0.0,0.0,0.0,Equity,Equity,Balance Sheet
+1001,1340 Burlington LLC,4140-0000,Rent-Commercial,2024-12-31,December,2024,Q4,-115900.56,0.0,10612.08,-126512.64,Commercial Rent Income,Revenue,Income Statement
+1001,1340 Burlington LLC,4610-0000,Estimated CAM Charges,2024-12-31,December,2024,Q4,-12111.42,0.0,1273.06,-13384.48,Miscellaneous Income,Revenue,Income Statement
+1001,1340 Burlington LLC,4612-0000,Estimated Insurance,2024-12-31,December,2024,Q4,-13561.57,0.0,1333.03,-14894.6,Miscellaneous Income,Revenue,Income Statement
+1001,1340 Burlington LLC,4614-0000,Estimated Property Tax,2024-12-31,December,2024,Q4,-41498.74,0.0,3664.3,-45163.04,Miscellaneous Income,Revenue,Income Statement
+1001,1340 Burlington LLC,5210-0000,Recoverable Repair,2024-12-31,December,2024,Q4,2405.0,0.0,0.0,2405.0,Recoverable Expense,Expense,Income Statement
+1001,1340 Burlington LLC,5320-0000,Recoverable Insurance,2024-12-31,December,2024,Q4,2169.75,0.0,0.0,2169.75,Recoverable Expense,Expense,Income Statement
+1001,1340 Burlington LLC,5350-0000,Recoverable Property Tax,2024-12-31,December,2024,Q4,0.0,42624.73,0.0,42624.73,Recoverable Expense,Expense,Income Statement
+1001,1340 Burlington LLC,5820-0000,Recoverable Management Fee,2024-12-31,December,2024,Q4,9000.0,3000.0,0.0,12000.0,Recoverable Expense,Expense,Income Statement
+1001,1340 Burlington LLC,6210-0000,Repair,2024-12-31,December,2024,Q4,0.0,2900.0,0.0,2900.0,Property Expense,Expense,Income Statement
+1001,1340 Burlington LLC,6320-0000,Insurance,2024-12-31,December,2024,Q4,759.45,0.0,0.0,759.45,Property Expense,Expense,Income Statement
+1001,1340 Burlington LLC,6610-0000,Mortgage Interest,2024-12-31,December,2024,Q4,33002.88,2714.38,0.0,35717.26,Property Expense,Expense,Income Statement
+1001,1340 Burlington LLC,6850-0000,Taxes and Licenses,2024-12-31,December,2024,Q4,87.0,0.0,0.0,87.0,Property Expense,Expense,Income Statement
+1001,1340 Burlington LLC,6860-0000,Accounting Fees,2024-12-31,December,2024,Q4,2618.99,2.4,0.0,2621.39,Property Expense,Expense,Income Statement
+1001,1340 Burlington LLC,9210-0000,Depreciation Expense - Buildings,2024-12-31,December,2024,Q4,23907.07,2173.42,0.0,26080.49,Other Expenses,Other Expenses,Income Statement
+1001,1340 Burlington LLC,9300-0000,Amortization Expense,2024-12-31,December,2024,Q4,6943.6,631.26,0.0,7574.86,Other Expenses,Other Expenses,Income Statement
+1002,1440 NKC LLC,1110-0000,Operating Cash,2024-12-31,December,2024,Q4,14579.91,0.0,5391.32,9188.59,Asset,Cash and cash equivalent,Balance Sheet
+1002,1440 NKC LLC,1120-0000,Operating Cash 2,2024-12-31,December,2024,Q4,5034.32,0.0,4227.43,806.89,Asset,Cash and cash equivalent,Balance Sheet
+1002,1440 NKC LLC,1260-0000,Due From Related Parties,2024-12-31,December,2024,Q4,100000.0,0.0,0.0,100000.0,Asset,Other Current Asset,Balance Sheet
+1002,1440 NKC LLC,1620-0000,Land,2024-12-31,December,2024,Q4,150000.0,0.0,0.0,150000.0,Asset,Non-Current Asset,Balance Sheet
+1002,1440 NKC LLC,1630-0000,Buildings,2024-12-31,December,2024,Q4,736869.37,0.0,0.0,736869.37,Asset,Non-Current Asset,Balance Sheet
+1002,1440 NKC LLC,1640-0000,Furniture and Fixtures,2024-12-31,December,2024,Q4,100000.0,0.0,0.0,100000.0,Asset,Non-Current Asset,Balance Sheet
+1002,1440 NKC LLC,1670-0000,Land Improvements,2024-12-31,December,2024,Q4,157275.03,0.0,0.0,157275.03,Asset,Non-Current Asset,Balance Sheet
+1002,1440 NKC LLC,1685-0000,Tenant Improvements,2024-12-31,December,2024,Q4,105695.14,0.0,0.0,105695.14,Asset,Non-Current Asset,Balance Sheet
+1002,1440 NKC LLC,1687-0000,Loan Fees,2024-12-31,December,2024,Q4,8836.5,0.0,3300.0,5536.5,Asset,Non-Current Asset,Balance Sheet
+1002,1440 NKC LLC,1730-0000,A/D - Buildings,2024-12-31,December,2024,Q4,-39430.51,0.0,1919.57,-41350.08,Asset,Contra Asset,Balance Sheet
+1002,1440 NKC LLC,1740-0000,A/D - Furniture and Fixtures,2024-12-31,December,2024,Q4,-100000.0,0.0,0.0,-100000.0,Asset,Contra Asset,Balance Sheet
+1002,1440 NKC LLC,1770-0000,A/D - Land Improvments,2024-12-31,December,2024,Q4,-156074.89,43.89,0.0,-156031.0,Asset,Contra Asset,Balance Sheet
+1002,1440 NKC LLC,1785-0000,A/D - Tenant Improvements,2024-12-31,December,2024,Q4,-87903.4,1233.36,0.0,-86670.04,Asset,Contra Asset,Balance Sheet
+1002,1440 NKC LLC,1787-0000,A/A - Loan Fees,2024-12-31,December,2024,Q4,-2033.02,925.72,0.0,-1107.3,Asset,Contra Asset,Balance Sheet
+1002,1440 NKC LLC,2170-0000,Due To Related Parties,2024-12-31,December,2024,Q4,-12000.0,0.0,0.0,-12000.0,Liabilities,Liabilities,Balance Sheet
+1002,1440 NKC LLC,2180-0000,Other Current Liabilities,2024-12-31,December,2024,Q4,-17448.04,0.0,0.0,-17448.04,Liabilities,Liabilities,Balance Sheet
+1002,1440 NKC LLC,2510-0000,Mortgage Principal,2024-12-31,December,2024,Q4,-1060473.35,2323.58,0.0,-1058149.77,Liabilities,Liabilities,Balance Sheet
+1002,1440 NKC LLC,3200-0001,Owner Contribution - Andrew Danner,2024-12-31,December,2024,Q4,0.0,0.0,3500.0,-3500.0,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3200-0002,Owner Contribution - Alex Danner,2024-12-31,December,2024,Q4,0.0,0.0,3500.0,-3500.0,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3400-0001,Owner Draw - Andrew Danner,2024-12-31,December,2024,Q4,0.0,2000.0,0.0,2000.0,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3400-0002,Owner Draw - Alex Danner,2024-12-31,December,2024,Q4,0.0,2000.0,0.0,2000.0,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3500-0001,Owner Equity - Andrew Danner,2024-12-31,December,2024,Q4,17399.62,0.0,0.0,17399.62,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3500-0002,Owner Equity - Alex Danner,2024-12-31,December,2024,Q4,17399.62,0.0,0.0,17399.62,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3500-0004,Owner Equity - Matthew Danner,2024-12-31,December,2024,Q4,16886.09,0.0,0.0,16886.09,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3500-0005,Owner Equity - SMD Trust,2024-12-31,December,2024,Q4,17398.63,0.0,0.0,17398.63,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,3800-0000,Retained Earnings,2024-12-31,December,2024,Q4,0.0,0.0,0.0,0.0,Equity,Equity,Balance Sheet
+1002,1440 NKC LLC,4140-0000,Rent-Commercial,2024-12-31,December,2024,Q4,-85450.0,0.0,5350.0,-90800.0,Commercial Rent Income,Revenue,Income Statement
+1002,1440 NKC LLC,4475-0000,Prepaid Rent,2024-12-31,December,2024,Q4,-250.0,0.0,4850.0,-5100.0,Residential Income,Revenue,Income Statement
+1002,1440 NKC LLC,5200-0000,Recoverable Maintenance,2024-12-31,December,2024,Q4,974.45,0.0,974.45,0.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5210-0000,Recoverable Repair,2024-12-31,December,2024,Q4,4850.0,0.0,4850.0,0.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5260-0000,Recoverable Lawn and Landscaping,2024-12-31,December,2024,Q4,2455.0,0.0,2455.0,0.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5310-0000,Recoverable Security Services,2024-12-31,December,2024,Q4,144.75,0.0,144.75,0.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5320-0000,Recoverable Insurance,2024-12-31,December,2024,Q4,8365.84,0.0,8365.84,0.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5350-0000,Recoverable Property Tax,2024-12-31,December,2024,Q4,0.0,0.0,0.0,0.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5420-0000,Recoverable Gas,2024-12-31,December,2024,Q4,215.37,4131.14,0.0,4346.51,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5430-0000,Recoverable Water & Sewer,2024-12-31,December,2024,Q4,744.34,333.35,0.0,1077.69,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5450-0000,Recoverable Trash,2024-12-31,December,2024,Q4,700.0,400.0,0.0,1100.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,5460-0000,Recoverable Snow Removal,2024-12-31,December,2024,Q4,3345.0,0.0,3345.0,0.0,Recoverable Expense,Expense,Income Statement
+1002,1440 NKC LLC,6210-0000,Repair,2024-12-31,December,2024,Q4,1100.8,4850.0,0.0,5950.8,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6240-0000,HVAC,2024-12-31,December,2024,Q4,1943.0,0.0,0.0,1943.0,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6250-0000,Alarm and Monitoring,2024-12-31,December,2024,Q4,86.85,0.0,86.85,0.0,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6260-0000,Lawn and Landscaping,2024-12-31,December,2024,Q4,680.0,2615.0,0.0,3295.0,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6270-0000,Maintenance,2024-12-31,December,2024,Q4,1069.91,1206.05,0.0,2275.96,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6280-0000,Snow Removal,2024-12-31,December,2024,Q4,0.0,3345.0,0.0,3345.0,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6320-0000,Insurance,2024-12-31,December,2024,Q4,1239.44,8365.84,0.0,9605.28,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6350-0000,Property Tax,2024-12-31,December,2024,Q4,0.0,14370.28,0.0,14370.28,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6420-0000,Gas,2024-12-31,December,2024,Q4,3903.71,0.0,3903.71,0.0,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6430-0000,Water and Sewer,2024-12-31,December,2024,Q4,179.71,0.0,179.71,0.0,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6450-0000,Trash Disposal,2024-12-31,December,2024,Q4,400.0,0.0,400.0,0.0,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6610-0000,Mortgage Interest,2024-12-31,December,2024,Q4,57832.59,5583.82,0.0,63416.41,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6850-0000,Taxes and Licenses,2024-12-31,December,2024,Q4,58.5,0.0,0.0,58.5,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,6860-0000,Accounting Fees,2024-12-31,December,2024,Q4,1980.9,0.0,0.0,1980.9,Property Expense,Expense,Income Statement
+1002,1440 NKC LLC,9210-0000,Depreciation Expense - Buildings,2024-12-31,December,2024,Q4,16974.51,1919.57,0.0,18894.08,Other Expenses,Other Expenses,Income Statement
+1002,1440 NKC LLC,9250-0000,Depreciation Expense - Land Improvements,2024-12-31,December,2024,Q4,181.89,0.0,43.89,138.0,Other Expenses,Other Expenses,Income Statement
+1002,1440 NKC LLC,9260-0000,Depreciation Expense - Tenant Improvements,2024-12-31,December,2024,Q4,1761.6,0.0,1233.36,528.24,Other Expenses,Other Expenses,Income Statement
+1002,1440 NKC LLC,9300-0000,Amortization Expense,2024-12-31,December,2024,Q4,2500.82,2374.28,0.0,4875.1,Other Expenses,Other Expenses,Income Statement
+1004,4011 Jackson LLC,1110-0000,Operating Cash,2024-12-31,December,2024,Q4,167.56,0.0,0.0,167.56,Asset,Cash and cash equivalent,Balance Sheet
+1004,4011 Jackson LLC,1120-0000,Operating Cash 2,2024-12-31,December,2024,Q4,22329.21,0.0,959.17,21370.04,Asset,Cash and cash equivalent,Balance Sheet
+1004,4011 Jackson LLC,1270-0000,Other Receivables,2024-12-31,December,2024,Q4,-1000.0,1000.0,0.0,0.0,Asset,Other Current Asset,Balance Sheet
+1004,4011 Jackson LLC,1620-0000,Land,2024-12-31,December,2024,Q4,208620.0,0.0,0.0,208620.0,Asset,Non-Current Asset,Balance Sheet
+1004,4011 Jackson LLC,1630-0000,Buildings,2024-12-31,December,2024,Q4,1982888.81,0.0,0.0,1982888.81,Asset,Non-Current Asset,Balance Sheet
+1004,4011 Jackson LLC,1670-0000,Land Improvements,2024-12-31,December,2024,Q4,387500.0,0.0,0.0,387500.0,Asset,Non-Current Asset,Balance Sheet
+1004,4011 Jackson LLC,1687-0000,Loan Fees,2024-12-31,December,2024,Q4,3854.0,0.0,0.0,3854.0,Asset,Non-Current Asset,Balance Sheet
+1004,4011 Jackson LLC,1730-0000,A/D - Buildings,2024-12-31,December,2024,Q4,-99568.34,0.0,4236.94,-103805.28,Asset,Contra Asset,Balance Sheet
+1004,4011 Jackson LLC,1770-0000,A/D - Land Improvments,2024-12-31,December,2024,Q4,-387500.0,0.0,0.0,-387500.0,Asset,Contra Asset,Balance Sheet
+1004,4011 Jackson LLC,1787-0000,A/A - Loan Fees,2024-12-31,December,2024,Q4,-687.9,0.0,275.9,-963.8,Asset,Contra Asset,Balance Sheet
+1004,4011 Jackson LLC,2110-0000,Accounts Payable,2024-12-31,December,2024,Q4,-335.38,335.38,0.0,0.0,Liabilities,Liabilities,Balance Sheet
+1004,4011 Jackson LLC,2180-0000,Other Current Liabilities,2024-12-31,December,2024,Q4,0.0,0.0,1000.0,-1000.0,Liabilities,Liabilities,Balance Sheet
+1004,4011 Jackson LLC,2250-0000,Tenant Deposits,2024-12-31,December,2024,Q4,-945.0,945.0,0.0,0.0,Liabilities,Liabilities,Balance Sheet
+1004,4011 Jackson LLC,2510-0000,Mortgage Principal,2024-12-31,December,2024,Q4,-2903853.52,0.0,0.0,-2903853.52,Liabilities,Liabilities,Balance Sheet
+1004,4011 Jackson LLC,3500-0001,Owner Equity - Andrew Danner,2024-12-31,December,2024,Q4,308689.38,0.0,0.0,308689.38,Equity,Equity,Balance Sheet
+1004,4011 Jackson LLC,3500-0002,Owner Equity - Alex Danner,2024-12-31,December,2024,Q4,331625.39,0.0,0.0,331625.39,Equity,Equity,Balance Sheet
+1004,4011 Jackson LLC,3500-0004,Owner Equity - Matthew Danner,2024-12-31,December,2024,Q4,50060.41,0.0,0.0,50060.41,Equity,Equity,Balance Sheet
+1004,4011 Jackson LLC,3800-0000,Retained Earnings,2024-12-31,December,2024,Q4,0.0,0.0,0.0,0.0,Equity,Equity,Balance Sheet
+1004,4011 Jackson LLC,4140-0000,Rent-Commercial,2024-12-31,December,2024,Q4,-220905.29,0.0,20261.36,-241166.65,Commercial Rent Income,Revenue,Income Statement
+1004,4011 Jackson LLC,6350-0000,Property Tax,2024-12-31,December,2024,Q4,40701.79,0.0,0.0,40701.79,Property Expense,Expense,Income Statement
+1004,4011 Jackson LLC,6610-0000,Mortgage Interest,2024-12-31,December,2024,Q4,223030.83,20275.53,0.0,243306.36,Property Expense,Expense,Income Statement
+1004,4011 Jackson LLC,6800-0000,Administrative Expenses,2024-12-31,December,2024,Q4,40.84,0.0,335.38,-294.54,Property Expense,Expense,Income Statement
+1004,4011 Jackson LLC,6860-0000,Accounting Fees,2024-12-31,December,2024,Q4,8113.25,0.0,0.0,8113.25,Property Expense,Expense,Income Statement
+1004,4011 Jackson LLC,7510-0000,Bank Fees,2024-12-31,December,2024,Q4,72.0,0.0,0.0,72.0,Corporate Expense,Expense,Income Statement
+1004,4011 Jackson LLC,9210-0000,Depreciation Expense - Buildings,2024-12-31,December,2024,Q4,46607.06,4236.94,0.0,50844.0,Other Expenses,Other Expenses,Income Statement
+1004,4011 Jackson LLC,9300-0000,Amortization Expense,2024-12-31,December,2024,Q4,494.9,275.9,0.0,770.8,Other Expenses,Other Expenses,Income Statement
