@@ -1,8 +1,8 @@
 ﻿FS,Account,Account_ID from,Account_ID to,Summary Grouping,Debit/Credit,Order_IS,Order_BS,Order_CF
-Income Statement,Commercial Rent Income,4140-0000,4140-0000,Revenue,Credit,100,,100
-Income Statement,Commercial Brokerage Income,4210-0000,4220-0000,Revenue,Credit,110,,110
-Income Statement,Mgt fee and Devt fee Income,4310-0000,4360-0000,Revenue,Credit,120,,120
-Income Statement,Potential/Residential Rent,4405-0000,4500-0000,Revenue,Credit,130,,130
+Income Statement,Total Income,4140-0000,4140-0000,Revenue,Credit,100,,100
+Income Statement,Total Income,4210-0000,4220-0000,Revenue,Credit,110,,110
+Income Statement,Total Income,4310-0000,4360-0000,Revenue,Credit,120,,120
+Income Statement,Total Income,4405-0000,4500-0000,Revenue,Credit,130,,130
 Income Statement,Operating Income,4510-0000,4910-0000,Revenue,Credit,140,,
 Income Statement,Other Income,8110-0000,8800-0000,Other Income,Credit,190,,400
 Income Statement,Recoverable Expense,5110-0000,5820-0000,Expenses,Debit,210,,200
@@ -23,9 +23,9 @@ Balance Sheet,Other Assets,1899-9990,1999-9999,Other Current Asset,Debit,,250,
 Balance Sheet,Current Liabilities,2100-0000,2310-0000,Current Liabilities,Credit,,300,
 Balance Sheet,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,800
 Balance Sheet,Owners Equity,3000-0000,3990-0000,Equity,Credit,,400,
-Cashflow,Total Income,,,,,,,199
-Cashflow,Total Expense,,,,,,,299
-Cashflow,Net Operating Income,,,,,,,300
-Cashflow,Net Income,,,,,,,599
-Cashflow,Total Adjustments,,,,,,,900
-Cashflow,Cashflow,,,,,,,999
+Total,Total Income,,,,,,,199
+Total,Total Expense,,,,,,,299
+Total,Net Operating Income,,,,,,,300
+Total,Net Income,,,,,,,599
+Total,Total Adjustments,,,,,,,900
+Total,Cashflow,,,,,,,999
