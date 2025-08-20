@@ -1,6 +1,5 @@
 ﻿FS,Account,Account_ID from,Account_ID to,Summary Grouping,Debit/Credit,Order_IS,Order_BS,Order_CF
 Income Statement,Total Income,4140-0000,4910-0000,Revenue,Credit,100,,100
-Income Statement,Operating Income,4510-0000,4910-0000,Revenue,Credit,140,,
 Income Statement,Other Income,8110-0000,8800-0000,Other Income,Credit,190,,400
 Income Statement,Recoverable Expense,5110-0000,5820-0000,Expenses,Debit,210,,200
 Income Statement,Property Expense,6210-0000,6880-0000,Expenses,Debit,220,,210
@@ -20,7 +19,6 @@ Balance Sheet,Other Assets,1899-9990,1999-9999,Other Current Asset,Debit,,250,
 Balance Sheet,Current Liabilities,2100-0000,2310-0000,Current Liabilities,Credit,,300,
 Balance Sheet,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,800
 Balance Sheet,Owners Equity,3000-0000,3990-0000,Equity,Credit,,400,
-Total,Total Income,,,,,,,199
 Total,Total Expense,,,,,,,299
 Total,Net Operating Income,,,,,,,300
 Total,Net Income,,,,,,,599
