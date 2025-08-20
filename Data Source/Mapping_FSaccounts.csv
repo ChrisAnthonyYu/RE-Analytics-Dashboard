@@ -1,26 +1,26 @@
-﻿FS,Account,Account_ID from,Account_ID to,Summary Grouping,Debit/Credit,Order_IS,Order_BS,Order_CF
-Income Statement,Total Income,4140-0000,4910-0000,Revenue,Credit,100,,100
-Income Statement,Other Income,8110-0000,8800-0000,Other Income,Credit,190,,400
-Income Statement,Recoverable Expense,5110-0000,5820-0000,Expenses,Debit,210,,200
-Income Statement,Property Expense,6210-0000,6880-0000,Expenses,Debit,220,,210
-Income Statement,Corporate Expense,7100-0000,7989-9999,Expenses,Debit,230,,220
-Income Statement,Other Expenses,9210-0000,9900-0000,Other Expenses,Debit,290,,500
-Balance Sheet,Operating Cash Accounts,1100-0000,1145-0000,Current Asset,Debit,,100,
-Balance Sheet,Current Assets,1150-0000,1210-0000,Current Asset,Debit,,110,
-Balance Sheet,Other Current Asset,1220-0000,1613-0000,Other Current Asset,Debit,,120,
-Balance Sheet,Property Plant and Equipment,1620-0000,1688-0000,Other Current Asset,Debit,,200,
-Balance Sheet,Intangible Asset,1688-0000,1688-0000,Other Current Asset,Debit,,210,
-Balance Sheet,Accumulated Depreciation,1730-0000,1785-0000,"Contra Asset
+﻿FS,Account_ref,Account,Account_ID from,Account_ID to,Summary Grouping,Debit/Credit,Order_IS,Order_BS,Order_CF
+Income Statement,1-100,Total Income,4140-0000,4910-0000,Revenue,Credit,100,,100
+Income Statement,1-300,Other Income,8110-0000,8800-0000,Other Income,Credit,190,,400
+Income Statement,1-210,Recoverable Expense,5110-0000,5820-0000,Expenses,Debit,210,,200
+Income Statement,1-220,Property Expense,6210-0000,6880-0000,Expenses,Debit,220,,210
+Income Statement,1-230,Corporate Expense,7100-0000,7989-9999,Expenses,Debit,230,,220
+Income Statement,1-400,Other Expenses,9210-0000,9900-0000,Other Expenses,Debit,290,,500
+Balance Sheet,2-100,Operating Cash Accounts,1100-0000,1145-0000,Current Asset,Debit,,100,
+Balance Sheet,2-200,Current Assets,1150-0000,1210-0000,Current Asset,Debit,,110,
+Balance Sheet,2-300,Other Current Asset,1220-0000,1613-0000,Other Current Asset,Debit,,120,
+Balance Sheet,2-400,Property Plant and Equipment,1620-0000,1688-0000,Other Current Asset,Debit,,200,
+Balance Sheet,2-500,Intangible Asset,1688-0000,1688-0000,Other Current Asset,Debit,,210,
+Balance Sheet,2-600,Accumulated Depreciation,1730-0000,1785-0000,"Contra Asset
 ",Credit,,220,600
-Balance Sheet,Accumulated Amortization,1786-0000,1789-0000,"Contra Asset
+Balance Sheet,2-700,Accumulated Amortization,1786-0000,1789-0000,"Contra Asset
 ",Credit,,230,700
-Balance Sheet,Investments - Equity Method,1800-0000,1860-0000,Other Current Asset,Debit,,240,
-Balance Sheet,Other Assets,1899-9990,1999-9999,Other Current Asset,Debit,,250,
-Balance Sheet,Current Liabilities,2100-0000,2310-0000,Current Liabilities,Credit,,300,
-Balance Sheet,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,800
-Balance Sheet,Owners Equity,3000-0000,3990-0000,Equity,Credit,,400,
-Total,Total Expense,,,,,,,299
-Total,Net Operating Income,,,,,,,300
-Total,Net Income,,,,,,,599
-Total,Total Adjustments,,,,,,,900
-Total,Cashflow,,,,,,,999
+Balance Sheet,2-800,Investments - Equity Method,1800-0000,1860-0000,Other Current Asset,Debit,,240,
+Balance Sheet,2-900,Other Assets,1899-9990,1999-9999,Other Current Asset,Debit,,250,
+Balance Sheet,2-1000,Current Liabilities,2100-0000,2310-0000,Current Liabilities,Credit,,300,
+Balance Sheet,2-1010,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,800
+Balance Sheet,2-1020,Owners Equity,3000-0000,3990-0000,Equity,Credit,,400,
+Total,1-200,Total Expense,,,,,,,299
+Total,1-500,Net Operating Income,,,,,,,300
+Total,1-600,Net Income,,,,,,,599
+Total,1-700,Total Adjustments,,,,,,,900
+Total,1-800,Cashflow,,,,,,,999
