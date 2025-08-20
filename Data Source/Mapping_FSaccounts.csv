@@ -1,8 +1,5 @@
 ﻿FS,Account,Account_ID from,Account_ID to,Summary Grouping,Debit/Credit,Order_IS,Order_BS,Order_CF
-Income Statement,Total Income,4140-0000,4140-0000,Revenue,Credit,100,,100
-Income Statement,Total Income,4210-0000,4220-0000,Revenue,Credit,110,,110
-Income Statement,Total Income,4310-0000,4360-0000,Revenue,Credit,120,,120
-Income Statement,Total Income,4405-0000,4500-0000,Revenue,Credit,130,,130
+Income Statement,Total Income,4140-0000,4910-0000,Revenue,Credit,100,,100
 Income Statement,Operating Income,4510-0000,4910-0000,Revenue,Credit,140,,
 Income Statement,Other Income,8110-0000,8800-0000,Other Income,Credit,190,,400
 Income Statement,Recoverable Expense,5110-0000,5820-0000,Expenses,Debit,210,,200
