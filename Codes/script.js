@@ -13,16 +13,26 @@ const MONTH_NAMES_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug
 
 document.addEventListener('DOMContentLoaded', ()=>{ loadDataFromGithub(); });
 
+function updateActiveTabView() {
+    const activeTabId = document.querySelector('.tab-content.active')?.id;
+    if (activeTabId === 'home') {
+        renderHomeView();
+    } else if (activeTabId === 'cashflow-overview') {
+        renderCashflowOverview();
+    }
+}
+
 function showTab(id, el){
   document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
   if(el) el.classList.add('active');
   document.getElementById('cashflowSubNav').style.display = (id === 'cashflow-overview') ? 'block' : 'none';
+  
   updateGlobalYearFilterForTab(id);
-  if(id === 'home') renderHomeView();
+  updateActiveTabView(); 
+  
   if(id === 'cashflow-overview') {
-      renderCashflowOverview();
       showCashflowSubTab('cf-overview', document.querySelector('.sub-nav-tab'));
   }
 }
@@ -54,6 +64,9 @@ function populateGlobalFilters(){
   const monthSel=document.getElementById('globalMonth');
   monthSel.innerHTML='<option value="all">All Months</option>';
   MONTH_NAMES.forEach((m,i)=>monthSel.innerHTML+=`<option value="${i+1}">${m}</option>`);
+
+  document.getElementById('globalProperty').value = 'all';
+  document.getElementById('globalMonth').value = 'all';
 }
 
 function updateGlobalYearFilterForTab(tabId) {
@@ -70,9 +83,7 @@ function updateGlobalYearFilterForTab(tabId) {
 }
 
 function onGlobalFiltersChange(){
-  const activeTabId = document.querySelector('.tab-content.active')?.id;
-  if(activeTabId === 'home') renderHomeView();
-  if(activeTabId === 'cashflow-overview') renderCashflowOverview();
+  updateActiveTabView();
 }
 
 function renderHomeView(){
@@ -88,7 +99,8 @@ function renderCashflowOverview(){
   const msg = document.getElementById('cfMessage');
 
   if(propId === 'all'){
-    cfContent.style.display='none'; msg.style.display='block';
+    cfContent.style.display='none'; 
+    msg.style.display='block';
     msg.textContent='Please select a property to view Cashflow Analytics.';
     return;
   }
@@ -103,11 +115,13 @@ function renderCashflowOverview(){
   if (loans.length === 0) { ul.innerHTML = '<li>No loan information found for this property.</li>';
   } else {
     loans.forEach(li=>{
+      // *** FIX: Uses the restored formatCurrency function for the loan amount ***
       ul.innerHTML+=`<li><strong>Banker:</strong> ${li.banker||'-'} | <strong>Loan #:</strong> ${li.loan_number||'-'} | <strong>Rate:</strong> ${formatPercent(li.rate)} | <strong>Maturity:</strong> ${li.maturity_date||'-'} <br> <strong>Loan Amount:</strong> ${formatCurrency(li.loan_amount)}</li>`;
     });
   }
   renderCashflowReportTable(propId, year);
-  msg.style.display='none'; cfContent.style.display='block';
+  msg.style.display='none'; 
+  cfContent.style.display='block';
 }
 
 function evaluateFormula(formula, reportMap) {
@@ -149,7 +163,6 @@ function renderCashflowReportTable(propId, year) {
     let reportMap = new Map();
     mapping.forEach(item => reportMap.set(item.account_ref, { ...item, accounts: {}, monthlyValues: Array(12).fill(0) }));
     
-    // --- STEP 1: Aggregate Trial Balance data into the correct account groups ---
     filteredTB.forEach(tbRow => {
         const group = [...reportMap.values()].find(g => 
             tbRow.account_id >= g.account_id_from && tbRow.account_id <= g.account_id_to
@@ -175,7 +188,6 @@ function renderCashflowReportTable(propId, year) {
         }
     });
 
-    // --- STEP 2: Calculate direct aggregation group totals ---
     reportMap.forEach(group => {
         if (Object.keys(group.accounts).length > 0) {
              group.monthlyValues = Object.values(group.accounts).reduce((totals, account) => {
@@ -185,7 +197,6 @@ function renderCashflowReportTable(propId, year) {
         }
     });
 
-    // --- STEP 3: DYNAMICALLY Perform hierarchical calculations ---
     mapping.forEach(group => {
         if (group.calculation_formula) {
             const calculatedValues = evaluateFormula(group.calculation_formula, reportMap);
@@ -195,7 +206,6 @@ function renderCashflowReportTable(propId, year) {
         }
     });
     
-    // --- STEP 4: Render the table ---
     let tableHTML = `<table class="report-table"><thead><tr><th>Account</th>${MONTH_NAMES_SHORT.map(m => `<th>${m}</th>`).join('')}<th>Total</th></tr></thead><tbody>`;
     
     reportMap.forEach(group => {
@@ -206,20 +216,20 @@ function renderCashflowReportTable(propId, year) {
              childAccounts.forEach(account => {
                 const total = account.monthlyValues.reduce((a, b) => a + b, 0);
                 tableHTML += `<tr class="account-row"><td>${account.label}</td>`;
-                account.monthlyValues.forEach(value => { tableHTML += `<td>${formatCurrency(value)}</td>`; });
-                tableHTML += `<td>${formatCurrency(total)}</td></tr>`;
+                account.monthlyValues.forEach(value => { tableHTML += `<td>${formatNumber(value)}</td>`; });
+                tableHTML += `<td>${formatNumber(total)}</td></tr>`;
             });
              
              const total = group.monthlyValues.reduce((a, b) => a + b, 0);
              tableHTML += `<tr class="group-header-row"><td>${group.account}</td>`;
-             group.monthlyValues.forEach(value => { tableHTML += `<td>${formatCurrency(value)}</td>`; });
-             tableHTML += `<td>${formatCurrency(total)}</td></tr>`;
+             group.monthlyValues.forEach(value => { tableHTML += `<td>${formatNumber(value)}</td>`; });
+             tableHTML += `<td>${formatNumber(total)}</td></tr>`;
 
         } else if (isTotalLine) {
              const total = group.monthlyValues.reduce((a, b) => a + b, 0);
              tableHTML += `<tr class="highlight-row"><td>${group.account}</td>`;
-             group.monthlyValues.forEach(value => { tableHTML += `<td>${formatCurrency(value)}</td>`; });
-             tableHTML += `<td>${formatCurrency(total)}</td></tr>`;
+             group.monthlyValues.forEach(value => { tableHTML += `<td>${formatNumber(value)}</td>`; });
+             tableHTML += `<td>${formatNumber(total)}</td></tr>`;
         }
     });
 
@@ -227,10 +237,19 @@ function renderCashflowReportTable(propId, year) {
     container.innerHTML = tableHTML;
 }
 
+// *** RESTORED: This function is for values that should always show full currency ***
 function formatCurrency(v){
-    const n = Number(String(v).replace(/[^0-9.-]+/g,""));
+    const n = parseCurrency(v);
     return isFinite(n) ? n.toLocaleString('en-US', { style: 'currency', 'currency': 'USD' }) : '$0.00';
 }
+
+// *** This function is specifically for the report's number format ***
+function formatNumber(v){
+    const n = parseCurrency(v);
+    if (Math.round(n) === 0) return '-';
+    return Math.round(n).toLocaleString('en-US');
+}
+
 function formatPercent(v){
     const n=Number(v);
     if(!isFinite(n))return '-';
