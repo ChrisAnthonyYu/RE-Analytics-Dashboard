@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windfield Real Estate Financials</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+    <style>
+        :root {
+            --color-primary: #1E424A;
+            --color-secondary: #3A878C;
+            --color-accent: #57B2B8;
+            --color-supporting: #5C7C9E;
+            --color-light-bg: #f8fafc;
+            --color-white: #ffffff;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-600: #475569;
+            --color-gray-800: #1e2b3b;
+            --color-highlight: #e0f2fe;
+            --color-success: #10b981;
+            --color-error: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--color-light-bg); color: var(--color-gray-800); font-size: 16px; }
+        .header { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); color: white; padding: 1.5rem 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .header h1 { font-size: 2.25rem; font-weight: 300; }
+        .nav-container { background: var(--color-white); border-bottom: 3px solid var(--color-accent); box-shadow: 0 2px 4px rgba(0,0,0,0.06); position: sticky; top: 97px; z-index: 100; }
+        .container { max-width: 1600px; margin: 2rem auto; padding: 0 1.5rem; }
+        .nav-tabs { display: flex; max-width: 1600px; margin: 0 auto; padding: 0 1rem; }
+        .nav-tab { background: none; border: none; padding: 1rem 1.5rem; cursor: pointer; font-size: 1rem; font-weight: 500; color: var(--color-gray-600); border-bottom: 3px solid transparent; transition: all 0.2s ease; white-space: nowrap; }
+        .nav-tab:hover { background-color: var(--color-gray-100); color: var(--color-secondary); }
+        .nav-tab.active { color: var(--color-primary); border-bottom-color: var(--color-accent); }
+        .nav-dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; background-color: var(--color-white); min-width: 240px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 10; border-radius: 8px; border: 1px solid var(--color-gray-200); overflow: hidden; margin-top: -1px; }
+        .dropdown-content button { color: var(--color-gray-800); padding: 12px 20px; display: block; background: none; border: none; width: 100%; text-align: left; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+        .dropdown-content button:hover { background-color: var(--color-gray-100); color: var(--color-primary); }
+        .nav-dropdown:hover .dropdown-content { display: block; }
+        .controls { background: var(--color-white); padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 2rem; border-left: 4px solid var(--color-accent); }
+        .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; align-items: end; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-gray-800); font-size: 0.9rem; }
+        select, input, .btn { padding: 0.75rem; border: 1px solid var(--color-gray-200); border-radius: 6px; font-size: 1rem; transition: all 0.2s ease; background-color: var(--color-white); }
+        .btn { background-color: var(--color-secondary); color: white; border: none; cursor: pointer; font-weight: 500; }
+        .btn:hover { background-color: var(--color-primary); }
+        .card { background: var(--color-white); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 2rem; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; background-color: var(--color-gray-100); color: var(--color-primary); padding: 1rem 1.5rem; font-weight: 600; border-bottom: 1px solid var(--color-gray-200); }
+        .card-body { padding: 1.5rem; }
+        .table-scroll-container { max-height: 480px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid var(--color-gray-200); font-size: 0.9rem; white-space: nowrap; }
+        th { background-color: var(--color-gray-100); font-weight: 600; position: sticky; top: 0; z-index: 1; }
+        tbody tr:hover { background-color: #f7feff; }
+        .highlight-row { background-color: var(--color-highlight) !important; font-weight: 500; }
+        .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .loading { text-align: center; padding: 3rem; color: var(--color-gray-600); font-size: 1.1rem; }
+        /* NEW: Grid for settings page */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        @media (max-width: 1024px) { .chart-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header"><h1>Windfield Real Estate Financials</h1></header>
+
+    <nav class="nav-container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('home', this)">Home</button>
+            <div class="nav-dropdown">
+                <button class="nav-tab">Financial Statements ▼</button>
+                <div class="dropdown-content">
+                    <button onclick="showTab('trial-balance', this)">Trial Balance</button>
+                    <button onclick="showTab('income-statement', this)">Income Statement</button>
+                    <button onclick="showTab('balance-sheet', this)">Balance Sheet</button>
+                </div>
+            </div>
+            <div class="nav-dropdown">
+                <button class="nav-tab">Cashflow ▼</button>
+                <div class="dropdown-content">
+                    <button onclick="showTab('rent-roll', this)">Rent Roll</button>
+                    <button onclick="showTab('loan-info', this)">Loan Information</button>
+                    <button onclick="showTab('mortgage-amortization', this)">Mortgage Amortization</button>
+                </div>
+            </div>
+            <button class="nav-tab" onclick="showTab('settings', this)">Settings</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="home" class="tab-content active">
+            <div class="controls">
+                <div class="controls-grid">
+                    <div class="form-group"><label for="globalProperty">Property:</label><select id="globalProperty" onchange="renderHomeView()"></select></div>
+                    <div class="form-group"><label for="homeMonth">Month:</label><select id="homeMonth" onchange="renderHomeView()"></select></div>
+                    <div class="form-group"><label for="homeYear">Year:</label><select id="homeYear" onchange="renderHomeView()"></select></div>
+                </div>
+            </div>
+            <div id="homeContent"><div class="loading">Loading data from GitHub...</div></div>
+        </div>
+
+        <div id="trial-balance" class="tab-content"><div class="card"><div class="card-header">Trial Balance</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="income-statement" class="tab-content"><div class="card"><div class="card-header">Income Statement</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="balance-sheet" class="tab-content"><div class="card"><div class="card-header">Balance Sheet</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="rent-roll" class="tab-content"><div class="card"><div class="card-header">Rent Roll</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="loan-info" class="tab-content"><div class="card"><div class="card-header">Loan Information</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="mortgage-amortization" class="tab-content"><div class="card"><div class="card-header">Mortgage Amortization</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+
+        <div id="settings" class="tab-content">
+             <div class="settings-grid">
+                <div class="card">
+                    <div class="card-header">Manage Years</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="newYearInput">Add a new year to the dropdown filters:</label>
+                            <input type="number" id="newYearInput" placeholder="e.g., 2026" style="margin-bottom: 1rem;">
+                            <button class="btn" onclick="handleAddYear()">Add Year</button>
+                            <p id="settingsStatus" style="margin-top: 1rem;"></p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </main>
+
+<script>
+    // --- GLOBAL STATE & CONFIGURATION ---
+    const appData = {};
+    const chartInstances = {};
+    let availableYears = []; 
+
+    const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/ChrisAnthonyYu/RE-Analytics-Dashboard/main/Data%20Source/';
+    // Verified filenames based on your latest screenshot
+    const FILE_NAMES = {
+        PROPERTIES: 'Properties.csv',
+        TRIAL_BALANCE: 'Trial_Balance.csv',
+        RENT_ROLL_M: 'RentRoll_Monthly.csv',
+        RENT_ROLL_A: 'RentRoll_Annual.csv',
+        LOANS: 'Loans.csv',
+        LOAN_INFO: 'Loan_Information.csv',
+        CHART_OF_ACCOUNTS: 'Chart_of_accounts.csv'
+    };
+    const REQUIRED_FILES = Object.values(FILE_NAMES);
+    const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDataFromGithub();
+    });
+
+    // --- NAVIGATION ---
+    function showTab(tabId, element) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+        document.getElementById(tabId).style.display = 'block';
+        
+        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        const parentDropdown = element.closest('.nav-dropdown');
+        if (parentDropdown) {
+            parentDropdown.querySelector('.nav-tab').classList.add('active');
+        } else if (element) {
+            element.classList.add('active');
+        }
+    }
+
+    // --- FILE HANDLING ---
+    async function loadDataFromGithub() {
+        const loadingStatus = document.getElementById('loadingStatus');
+        showTab('home', document.querySelector('.nav-tab'));
+
+        const filePromises = REQUIRED_FILES.map(fileName => {
+            const fileUrl = GITHUB_BASE_URL + fileName;
+            return fetch(fileUrl).then(response => {
+                if (!response.ok) { throw new Error(`Network response was not ok for ${fileName}`); }
+                return response.text();
+            }).then(csvText => new Promise((resolve, reject) => {
+                Papa.parse(csvText, {
+                    header: true, skipEmptyLines: true, dynamicTyping: true,
+                    transformHeader: header => header.trim().toLowerCase().replace(/ /g, '_'),
+                    complete: results => { resolve({ name: fileName, data: results.data }); },
+                    error: err => { reject(err); },
+                });
+            })).catch(error => {
+                console.error(`Failed to fetch or parse ${fileName}:`, error);
+                return null;
+            });
+        });
+
+        try {
+            const results = await Promise.all(filePromises);
+            const loadedResults = results.filter(r => r !== null);
+            if (loadedResults.length < REQUIRED_FILES.length) { throw new Error("One or more required files failed to load."); }
+            for(const result of loadedResults) {
+                if (!result) continue;
+                const key = Object.keys(FILE_NAMES).find(k => FILE_NAMES[k] === result.name);
+                const dataKey = key.toLowerCase().replace(/_([a-z])/g, g => g[1].toUpperCase());
+                appData[dataKey] = result.data;
+            }
+            populateAllFilters();
+            renderHomeView();
+        } catch (error) {
+            document.getElementById('homeContent').innerHTML = `<div class="loading" style="color:red;">Error loading files. Please check the browser console for more details.</div>`;
+            console.error("File loading error:", error);
+        }
+    }
+    
+    // --- FILTERS & RENDERING ---
+    function populateAllFilters() {
+        // FIXED: Properties dropdown logic is more robust now
+        const globalPropSelect = document.getElementById('globalProperty');
+        globalPropSelect.innerHTML = '<option value="all">All Properties</option>';
+        if (appData.properties) {
+            const properties = appData.properties.map(p => ({
+                id: p.property_id,
+                // Check for 'properties' or 'property' as column name for flexibility
+                name: p.properties || p.property 
+            }))
+            .filter(p => p.id && p.name) // Ensure both ID and name exist
+            .sort((a,b) => a.name.localeCompare(b.name));
+            
+            properties.forEach(p => globalPropSelect.innerHTML += `<option value="${p.id}">${p.name}</option>`);
+        } else {
+            console.error("Property data ('appData.properties') is not available.");
+        }
+
+        // Years (Static list + dynamically added)
+        if (availableYears.length === 0) {
+            availableYears = [2023, 2024, 2025];
+        }
+        updateYearDropdowns();
+
+        // Months (Static list)
+        const monthSelect = document.getElementById('homeMonth');
+        monthSelect.innerHTML = '<option value="all">All Months</option>';
+        MONTH_NAMES.forEach((name, i) => monthSelect.innerHTML += `<option value="${i + 1}">${name}</option>`);
+    }
+
+    function handleAddYear() {
+        const yearInput = document.getElementById('newYearInput');
+        const statusEl = document.getElementById('settingsStatus');
+        const newYear = parseInt(yearInput.value, 10);
+
+        statusEl.textContent = ''; // Clear previous message
+        if (!newYear || newYear < 2000 || newYear > 2100) {
+            statusEl.textContent = 'Please enter a valid year.';
+            statusEl.style.color = 'var(--color-error)';
+            return;
+        }
+        if (availableYears.includes(newYear)) {
+            statusEl.textContent = `Year ${newYear} is already in the list.`;
+            statusEl.style.color = 'var(--color-error)';
+            return;
+        }
+        availableYears.push(newYear);
+        availableYears.sort((a, b) => b - a);
+        updateYearDropdowns();
+        
+        statusEl.textContent = `Year ${newYear} was successfully added!`;
+        statusEl.style.color = 'var(--color-success)';
+        yearInput.value = '';
+    }
+
+    function updateYearDropdowns() {
+        const yearSelect = document.getElementById('homeYear');
+        yearSelect.innerHTML = '<option value="all">All Years</option>';
+        availableYears.forEach(y => yearSelect.innerHTML += `<option value="${y}">${y}</option>`);
+    }
+
+    function renderHomeView() {
+        const selectedGlobalPropId = document.getElementById('globalProperty').value;
+        const selectedLocalState = document.getElementById('propStateFilter')?.value || 'all';
+        const selectedYear = document.getElementById('homeYear').value;
+        const selectedMonth = document.getElementById('homeMonth').value;
+
+        let tbData = appData.trialBalance;
+        if (selectedYear !== 'all') tbData = tbData.filter(r => r.year == selectedYear);
+        if (selectedMonth !== 'all') {
+            const monthName = MONTH_NAMES[selectedMonth - 1];
+            tbData = tbData.filter(r => r.month === monthName);
+        }
+        
+        const propertiesForTable = selectedLocalState === 'all' ? appData.properties : appData.properties.filter(p => p.state === selectedLocalState);
+        
+        const tableBody = document.createElement('tbody');
+        if(propertiesForTable) {
+            propertiesForTable.forEach(prop => {
+                const propTB = tbData.filter(r => r.property_id == prop.property_id);
+                const safeSum = (arr) => arr.reduce((sum, item) => sum + (Number(item.ending_balance) || 0), 0);
+                const totalIncome = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'revenue')) * -1;
+                const totalOperatingExpense = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'expense'));
+                const recoverableExp = safeSum(propTB.filter(r => r.class?.toLowerCase() === 'recoverable expense'));
+                const propertyExp = safeSum(propTB.filter(r => r.class?.toLowerCase() === 'property expense'));
+                const corporateExp = safeSum(propTB.filter(r => r.class?.toLowerCase() === 'corporate expense'));
+                const otherIncome = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'other income')) * -1;
+                const otherExpense = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'other expense'));
+                const noi = totalIncome - totalOperatingExpense;
+                const netIncome = noi + otherIncome - otherExpense;
+                const isHighlighted = (prop.property_id == selectedGlobalPropId);
+                const highlightClass = isHighlighted ? 'highlight-row' : '';
+                const propName = prop.properties || prop.property;
+                tableBody.innerHTML += `<tr class="${highlightClass}"><td><b>${propName}</b></td><td>${prop.state || 'N/A'}</td><td>${formatCurrency(totalIncome)}</td><td>${formatCurrency(totalOperatingExpense)}</td><td>${formatCurrency(recoverableExp)}</td><td>${formatCurrency(propertyExp)}</td><td>${formatCurrency(corporateExp)}</td><td><b>${formatCurrency(noi)}</b></td><td><b>${formatCurrency(netIncome)}</b></td></tr>`;
+            });
+        }
+        
+        const homeContentHTML = `
+            <div class="card">
+                <div class="card-header">
+                    <span>Properties Overview</span>
+                    <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.5rem;">
+                        <label for="propStateFilter" style="margin-bottom: 0;">State:</label>
+                        <select id="propStateFilter" onchange="renderHomeView()"></select>
+                    </div>
+                </div>
+                <div class="table-scroll-container">
+                    <table>
+                        <thead><tr><th>Property</th><th>State</th><th>Total Income</th><th>Total Expenses</th><th>Recoverable</th><th>Property</th><th>Corporate</th><th>NOI</th><th>Net Income</th></tr></thead>
+                        <tbody>${tableBody.innerHTML || '<tr><td colspan="9" class="loading">No data for selected filters.</td></tr>'}</tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-grid">
+                <div class="card"><div class="card-header">Revenue Trends</div><div class="card-body"><canvas id="revenueTrendChart"></canvas></div></div>
+                <div class="card"><div class="card-header">NOI Comparison by Property</div><div class="card-body"><canvas id="noiCompareChart"></canvas></div></div>
+                <div class="card"><div class="card-header">Expense Breakdown</div><div class="card-body"><canvas id="expenseBreakdownChart"></canvas></div></div>
+            </div>`;
+        document.getElementById('homeContent').innerHTML = homeContentHTML;
+        
+        const homeStateSelect = document.getElementById('propStateFilter');
+        if (appData.properties) {
+            const states = [...new Set(appData.properties.map(p => p.state))].filter(Boolean).sort();
+            homeStateSelect.innerHTML = '<option value="all">All States</option>';
+            states.forEach(s => homeStateSelect.innerHTML += `<option value="${s}">${s}</option>`);
+            homeStateSelect.value = selectedLocalState;
+        }
+
+        renderRevenueTrendChart(tbData, selectedGlobalPropId);
+        renderNoiCompareChart(tbData, selectedGlobalPropId);
+        renderExpenseBreakdownChart(tbData, selectedGlobalPropId);
+    }
+    
+    // --- CHART RENDERING FUNCTIONS ---
+    function renderRevenueTrendChart(data, selectedPropId) { /* ... same as before ... */ }
+    function renderNoiCompareChart(data, highlightedPropId) { /* ... same as before ... */ }
+    function renderExpenseBreakdownChart(data, selectedPropId) { /* ... same as before ... */ }
+    
+    // --- UTILITY ---
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(isNaN(value) ? 0 : value);
+    }
+
+    (function pasteUnchangedFunctions() {
+        renderRevenueTrendChart = function(data, selectedPropId) {
+            if(chartInstances.revenue) chartInstances.revenue.destroy();
+            const ctx = document.getElementById('revenueTrendChart').getContext('2d');
+            const chartData = selectedPropId === 'all' ? data : data.filter(r => r.property_id == selectedPropId);
+            const monthlyRevenue = {};
+            MONTH_NAMES.forEach(m => monthlyRevenue[m] = 0);
+            chartData.filter(r => r.summary_grouping?.toLowerCase() === 'revenue').forEach(r => {
+                if (r.month && MONTH_NAMES.includes(r.month)) {
+                    monthlyRevenue[r.month] += (Number(r.ending_balance) || 0) * -1;
+                }
+            });
+            chartInstances.revenue = new Chart(ctx, { type: 'line', data: { labels: MONTH_NAMES, datasets: [{ label: 'Total Revenue', data: Object.values(monthlyRevenue), borderColor: 'rgba(58, 135, 140, 1)', backgroundColor: 'rgba(58, 135, 140, 0.2)', fill: true, tension: 0.3 }] }, options: { plugins: { title: { display: true, text: 'Monthly Revenue Trends' } }, scales: { y: { ticks: { callback: value => formatCurrency(value) } } } } });
+        };
+        renderNoiCompareChart = function(data, highlightedPropId) {
+            if(chartInstances.noi) chartInstances.noi.destroy();
+            const ctx = document.getElementById('noiCompareChart').getContext('2d');
+            const noiByProperty = {};
+            if (appData.properties) {
+                appData.properties.forEach(p => {
+                    const propName = p.properties || p.property;
+                    if (!propName) return;
+                    const propTB = data.filter(r => r.property_id == p.property_id);
+                    const totalIncome = propTB.filter(r => r.summary_grouping?.toLowerCase() === 'revenue').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0) * -1;
+                    const totalExpense = propTB.filter(r => r.summary_grouping?.toLowerCase() === 'expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+                    noiByProperty[propName] = totalIncome - totalExpense;
+                });
+            }
+            const sortedProperties = Object.entries(noiByProperty).sort((a,b) => b[1] - a[1]);
+            const highlightedProp = appData.properties?.find(p => p.property_id == highlightedPropId);
+            const highlightedPropName = highlightedProp?.properties || highlightedProp?.property;
+            
+            chartInstances.noi = new Chart(ctx, { type: 'bar', data: { labels: sortedProperties.map(p => p[0]), datasets: [{ label: 'NOI', data: sortedProperties.map(p => p[1]), backgroundColor: sortedProperties.map(p => p[0] === highlightedPropName ? 'rgba(29, 78, 216, 0.8)' : 'rgba(58, 135, 140, 0.7)'), }] }, options: { indexAxis: 'y', plugins: { title: { display: true, text: 'NOI Comparison by Property' } }, scales: { x: { ticks: { callback: value => formatCurrency(value) } } } } });
+        };
+        renderExpenseBreakdownChart = function(data, selectedPropId) {
+            if(chartInstances.expense) chartInstances.expense.destroy();
+            const ctx = document.getElementById('expenseBreakdownChart').getContext('2d');
+            const chartData = selectedPropId === 'all' ? data : data.filter(r => r.property_id == selectedPropId);
+            const recoverable = chartData.filter(r => r.class?.toLowerCase() === 'recoverable expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+            const property = chartData.filter(r => r.class?.toLowerCase() === 'property expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+            const corporate = chartData.filter(r => r.class?.toLowerCase() === 'corporate expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+            chartInstances.expense = new Chart(ctx, { type: 'doughnut', data: { labels: ['Recoverable', 'Property', 'Corporate'], datasets: [{ data: [recoverable, property, corporate], backgroundColor: ['#57B2B8', '#5C7C9E', '#3A878C'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Expense Breakdown' } } } });
+        };
+    })();
+</script>
+</body>
+</html>
