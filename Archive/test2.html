@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Windfield Real Estate Financials</title>
+
+  <!-- Libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <style>
+    :root{
+      --color-primary:#1E424A;
+      --color-secondary:#3A878C;
+      --color-accent:#57B2B8;
+      --color-supporting:#5C7C9E;
+      --color-light-bg:#f8fafc;
+      --color-white:#ffffff;
+      --color-gray-100:#f1f5f9;
+      --color-gray-200:#e2e8f0;
+      --color-gray-600:#475569;
+      --color-gray-800:#1e2b3b;
+      --color-highlight:#e0f2fe;
+      --color-success:#10b981;
+      --color-error:#ef4444;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      background:var(--color-light-bg);
+      color:var(--color-gray-800);
+      font-size:16px;
+    }
+
+    /* Header */
+    .header{
+      position:sticky;top:0;z-index:1000;
+      background:linear-gradient(135deg,var(--color-primary) 0%,var(--color-secondary) 100%);
+      color:#fff;padding:1.25rem 2rem;
+      box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .header h1{font-weight:300;font-size:2rem;}
+
+    /* Filters */
+    .filters-bar{
+      position:sticky; top:72px; z-index:950;
+      background:
+        linear-gradient(180deg, rgba(30,66,74,0.12) 0%, rgba(87,178,184,0.10) 100%),
+        var(--color-white);
+      border-bottom:1px solid var(--color-gray-200);
+      box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    }
+    .filters-inner{max-width:1600px;margin:0 auto; padding:0.85rem 1.25rem;}
+    .controls{background:var(--color-white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,0.08);border-left:4px solid var(--color-accent);padding:0.75rem 1rem;}
+    .controls-grid{display:grid; gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));align-items:end;}
+    .form-group{display:flex;flex-direction:column;}
+    .form-group label{font-size:0.9rem;color:var(--color-gray-800);margin-bottom:0.4rem;}
+    select,input{padding:0.6rem;border:1px solid var(--color-gray-200);border-radius:8px;background:var(--color-white); font-size:1rem;}
+
+    /* Nav */
+    .nav-container{position:sticky; top:148px; z-index:900;background:var(--color-white);border-bottom:3px solid var(--color-accent);box-shadow:0 2px 4px rgba(0,0,0,0.06);}
+    .nav-tabs{max-width:1600px;margin:0 auto;padding:0 1.25rem;display:flex; gap:0.5rem; flex-wrap:wrap;}
+    .nav-tab{background:none;border:none;cursor:pointer;padding:0.9rem 1.1rem;border-bottom:3px solid transparent;color:var(--color-gray-600); font-weight:500;transition:all .2s ease; white-space:nowrap;}
+    .nav-tab:hover{background:var(--color-gray-100);color:var(--color-secondary);}
+    .nav-tab.active{color:var(--color-primary);border-bottom-color:var(--color-accent);}
+
+    /* Layout */
+    .container{max-width:1600px;margin:1.25rem auto 2rem; padding:0 1.25rem;}
+    .tab-content{display:none;}
+    .tab-content.active{display:block;}
+
+    /* Cards */
+    .card{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden;margin-bottom:1.25rem;}
+    .card-header{display:flex;justify-content:space-between;align-items:center;background:var(--color-gray-100);color:var(--color-primary);padding:1rem 1.25rem; font-weight:600; border-bottom:1px solid var(--color-gray-200);}
+    .card-body{padding:1.25rem;}
+    .loading{padding:2rem;text-align:center;color:var(--color-gray-600);}
+
+    .kpi-grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));}
+    .kpi-item h3{margin-bottom:0.5rem;color:var(--color-secondary);font-size:1.05rem;}
+    .kpi-item p{margin:0.25rem 0;}
+
+    .loan-list{margin:0.5rem 0 0.25rem 1.25rem;}
+    .loan-list li{margin-bottom:0.5rem;}
+
+    .btn{border:none;cursor:pointer;color:#fff;background:var(--color-secondary);padding:0.75rem 1rem;border-radius:8px;font-weight:600;}
+    .btn:hover{background:var(--color-primary);}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Windfield Real Estate Financials</h1>
+  </header>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="filters-inner">
+      <div class="controls">
+        <div class="controls-grid">
+          <div class="form-group">
+            <label for="globalProperty">Property</label>
+            <select id="globalProperty" onchange="onGlobalFiltersChange()"></select>
+          </div>
+          <div class="form-group">
+            <label for="globalMonth">Month</label>
+            <select id="globalMonth" onchange="onGlobalFiltersChange()"></select>
+          </div>
+          <div class="form-group">
+            <label for="globalYear">Year</label>
+            <select id="globalYear" onchange="onGlobalFiltersChange()"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="nav-container">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showTab('home', this)">Home</button>
+      <button class="nav-tab" onclick="showTab('financial-statements', this)">Financial Statements</button>
+      <button class="nav-tab" onclick="showTab('cashflow-overview', this)">Cashflow</button>
+      <button class="nav-tab" onclick="showTab('settings', this)">Settings</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section id="home" class="tab-content active">
+      <div id="homeContent" class="card">
+        <div class="card-header">Properties Overview</div>
+        <div class="card-body"><div class="loading">Loading data from GitHub…</div></div>
+      </div>
+    </section>
+
+    <section id="financial-statements" class="tab-content">
+      <div class="card">
+        <div class="card-header">Financial Statements</div>
+        <div class="card-body">
+          <button class="btn">Trial Balance</button>
+          <button class="btn">Income Statement</button>
+          <button class="btn">Balance Sheet</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="cashflow-overview" class="tab-content">
+      <div class="card">
+        <div class="card-header">Cashflow Overview</div>
+        <div class="card-body">
+          <div id="cfMessage" class="loading" style="display:none;"></div>
+          <div class="kpi-grid" id="cfGrid" style="display:none;">
+            <div class="kpi-item">
+              <h3>Property Details</h3>
+              <p><strong>Property Name:</strong> <span id="cf-property-name">-</span></p>
+              <p><strong>Address:</strong> <span id="cf-property-address">-</span></p>
+              <p><strong>Property Type:</strong> <span id="cf-property-type">-</span></p>
+              <p><strong>Owner:</strong> <span id="cf-property-owner">-</span></p>
+            </div>
+            <div class="kpi-item">
+              <h3>Loan Information</h3>
+              <ul id="cf-loans" class="loan-list"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="settings" class="tab-content">
+      <div class="card">
+        <div class="card-header">Manage Years</div>
+        <div class="card-body">
+          <input type="number" id="newYearInput" placeholder="e.g., 2026">
+          <button class="btn" onclick="handleAddYear()">Add Year</button>
+          <p id="settingsStatus"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+const appData = {};
+let availableYears = [2023,2024,2025];
+const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/ChrisAnthonyYu/RE-Analytics-Dashboard/main/Data%20Source/';
+const FILE_NAMES = { PROPERTIES:'Properties.csv', LOANS:'Loans.csv', LOAN_INFO:'Loan_Information.csv' };
+const REQUIRED_FILES = Object.values(FILE_NAMES);
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+document.addEventListener('DOMContentLoaded', ()=>{ loadDataFromGithub(); });
+
+function showTab(id, el){
+  document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(id==='home') renderHomeView();
+  if(id==='cashflow-overview') renderCashflowOverview();
+}
+
+async function loadDataFromGithub(){
+  const results = await Promise.all(REQUIRED_FILES.map(f=>fetch(GITHUB_BASE_URL+f).then(r=>r.text()).then(txt=>new Promise(res=>{
+    Papa.parse(txt,{header:true,skipEmptyLines:true,dynamicTyping:true,transformHeader:h=>h.trim().toLowerCase().replace(/ /g,'_'),complete:r=>res({name:f,data:r.data})});
+  }))));
+  results.forEach(r=>{ const key=Object.keys(FILE_NAMES).find(k=>FILE_NAMES[k]===r.name); appData[key.toLowerCase()] = r.data; });
+  populateGlobalFilters();
+  renderHomeView();
+}
+
+function populateGlobalFilters(){
+  const propSel=document.getElementById('globalProperty');
+  propSel.innerHTML='<option value="all">All Properties</option>';
+  (appData.properties||[]).forEach(p=>{propSel.innerHTML+=`<option value="${p.property_id}">${p.properties||p.property}</option>`;});
+  updateYearDropdown();
+  const monthSel=document.getElementById('globalMonth');
+  monthSel.innerHTML='<option value="all">All Months</option>';
+  MONTH_NAMES.forEach((m,i)=>monthSel.innerHTML+=`<option value="${i+1}">${m}</option>`);
+}
+function updateYearDropdown(){
+  const sel=document.getElementById('globalYear');
+  sel.innerHTML='<option value="all">All Years</option>';
+  availableYears.forEach(y=>sel.innerHTML+=`<option value="${y}">${y}</option>`);
+}
+function handleAddYear(){
+  const y=+document.getElementById('newYearInput').value; if(!y) return;
+  if(!availableYears.includes(y)){availableYears.push(y);availableYears.sort((a,b)=>b-a);updateYearDropdown();}
+}
+function onGlobalFiltersChange(){
+  if(document.getElementById('home').classList.contains('active')) renderHomeView();
+  if(document.getElementById('cashflow-overview').classList.contains('active')) renderCashflowOverview();
+}
+function renderHomeView(){
+  const body=document.querySelector('#homeContent .card-body');
+  const p=document.getElementById('globalProperty').value;
+  const y=document.getElementById('globalYear').value;
+  const m=document.getElementById('globalMonth').value;
+  body.innerHTML=`Filters applied: Property ${p}, Year ${y}, Month ${m}`;
+}
+
+function renderCashflowOverview(){
+  const propId=document.getElementById('globalProperty').value;
+  const y=document.getElementById('globalYear').value;
+  const m=document.getElementById('globalMonth').value;
+  const cfGrid=document.getElementById('cfGrid');
+  const msg=document.getElementById('cfMessage');
+  if(propId==='all'){cfGrid.style.display='none';msg.style.display='block';msg.textContent='Please select a property.';return;}
+  const prop=(appData.properties||[]).find(p=>String(p.property_id).toLowerCase()===String(propId).toLowerCase());
+  document.getElementById('cf-property-name').textContent=prop?.properties||prop?.property||'-';
+  document.getElementById('cf-property-address').textContent=prop?.address||'-';
+  document.getElementById('cf-property-type').textContent=prop?.property_type||'-';
+  document.getElementById('cf-property-owner').textContent=prop?.owner||'-';
+
+  const loans=(appData.loan_info||[]).filter(l=>String(l.property_id).toLowerCase()===String(propId).toLowerCase());
+  const schedule=(appData.loans||[]).filter(l=>String(l.property_id).toLowerCase()===String(propId).toLowerCase());
+
+  const ul=document.getElementById('cf-loans'); ul.innerHTML='';
+  loans.forEach(li=>{
+    let chosen=null;
+    const matchSched=schedule.filter(s=>String(s.loan_number).toLowerCase()===String(li.loan_number).toLowerCase());
+    if(y!=='all'&&m!=='all'){chosen=matchSched.find(s=>+s.year===+y && +s.month===+m);}
+    if(!chosen){chosen=matchSched.sort((a,b)=>(b.year-a.year)||(b.month-a.month))[0];}
+    const bal=chosen?chosen.ending_balance:0;
+    ul.innerHTML+=`<li>
+      <strong>Banker:</strong> ${li.banker||'-'} |
+      <strong>Loan #:</strong> ${li.loan_number||'-'} |
+      <strong>Loan Amount:</strong> ${formatCurrency(li.loan_amount)} |
+      <strong>Rate:</strong> ${formatPercent(li.rate)} |
+      <strong>Amortization:</strong> ${li.amortization||'-'} yrs |
+      <strong>Maturity:</strong> ${li.maturity_date||'-'} |
+      <strong>Remaining Balance:</strong> ${formatCurrency(bal)}
+    </li>`;
+  });
+
+  msg.style.display='none'; cfGrid.style.display='grid';
+}
+function formatCurrency(v){const n=Number(v);return isFinite(n)?n.toLocaleString('en-US',{style:'currency',currency:'USD'}):'-';}
+function formatPercent(v){const n=Number(v);if(!isFinite(n))return '-';const pct=n>1.5?n:n*100;return pct.toFixed(2)+'%';}
+</script>
+</body>
+</html>
