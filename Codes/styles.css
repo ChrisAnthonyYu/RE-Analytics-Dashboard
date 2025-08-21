@@ -49,11 +49,42 @@ select,input{padding:0.6rem;border:1px solid var(--color-gray-200);border-radius
 .nav-tab{background:none;border:none;cursor:pointer;padding:0.9rem 1.1rem;border-bottom:3px solid transparent;color:var(--color-gray-600); font-weight:500;transition:all .2s ease; white-space:nowrap;}
 .nav-tab:hover{background:var(--color-gray-100);color:var(--color-secondary);}
 .nav-tab.active{color:var(--color-primary);border-bottom-color:var(--color-accent);}
-.sub-nav-container{background: var(--color-white); border-bottom: 1px solid var(--color-gray-200);}
-.sub-nav-tabs{display:flex; gap:0.5rem; flex-wrap:wrap;}
-.sub-nav-tab{background:none; border:none; cursor:pointer; padding:0.8rem 1rem; border-bottom:2px solid transparent; color:var(--color-gray-600); font-weight:500; transition: color .2s ease, border-color .2s ease;}
-.sub-nav-tab:hover{color:var(--color-secondary);}
-.sub-nav-tab.active{color:var(--color-primary); border-bottom-color:var(--color-secondary);}
+
+/* --- NEW FLOATING TABS STYLES --- */
+.sub-nav-container {
+    background: none;
+    border-bottom: none;
+    padding: 1rem 0;
+}
+.sub-nav-container .nav-tabs {
+    background: var(--color-white);
+    border-radius: 999px; /* Pill shape */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 0.4rem;
+    display: inline-flex;
+    gap: 0.4rem;
+}
+.sub-nav-tab {
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1.25rem;
+    font-weight: 500;
+    color: var(--color-gray-600);
+    background: transparent;
+    transition: all 0.2s ease-in-out;
+    border-bottom: none !important; /* Override default bottom border */
+}
+.sub-nav-tab:hover {
+    background-color: var(--color-gray-100);
+    color: var(--color-secondary);
+}
+.sub-nav-tab.active {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    border-bottom: none !important; /* Override default bottom border */
+}
+
 .sub-tab-content{display:none;} .sub-tab-content.active{display:block;}
 .container{max-width:1600px;margin:1.25rem auto 2rem; padding:0 1.25rem;}
 .tab-content{display:none;} .tab-content.active{display:block;}
@@ -67,24 +98,70 @@ select,input{padding:0.6rem;border:1px solid var(--color-gray-200);border-radius
 .loan-list li{margin-bottom:0.75rem; line-height: 1.5;}
 .table-container{overflow-x: auto;}
 
-.report-table{width:100%;border-collapse:collapse;margin-top:0.5rem; font-size: 0.95rem;}
-.report-table thead{
-    background: var(--color-primary);
+/* --- UPDATED REPORT STYLES --- */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.report-table th, .report-table td {
+    border: none;
+    padding: 0.8rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.report-table thead {
+    background-color: #1E424A;
     color: var(--color-white);
-    font-size:0.9rem;
 }
-.report-table th, .report-table td{
-    padding:0.75rem;
-    border:1px solid #eef2f7;
-    text-align:left;
-    white-space:nowrap;
+
+.report-table thead tr {
+    border-bottom: 2px solid var(--color-primary);
 }
-.report-table td:not(:first-child){text-align:right;}
-.report-table tbody tr:nth-child(even){background:var(--color-light-bg);}
-.report-table .highlight-row{font-weight:bold; background-color:var(--color-highlight); border-top: 2px solid var(--color-secondary);}
-.report-table .group-header-row {font-weight: bold; background-color: var(--color-gray-100);}
-.report-table .account-row td:first-child {padding-left: 2rem;}
+
+.report-table thead th {
+    font-weight: 600;
+    color: var(--color-white);
+}
+
+.report-table tbody tr {
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.report-table tbody tr:nth-child(even) {
+    background: none;
+}
+
+.report-table td:not(:first-child) {
+    text-align: right;
+}
+
+.report-table .account-row td:first-child {
+    padding-left: 2rem;
+    color: var(--color-gray-600);
+}
+
+.report-table .group-header-row,
+.report-table .highlight-row {
+    background-color: var(--color-highlight);
+}
+
+.report-table .group-header-row {
+    border-top: 1px solid var(--color-gray-200);
+}
+.report-table .highlight-row {
+    border-top: 2px solid var(--color-secondary);
+}
+
 .report-table .highlight-row td:first-child,
 .report-table .group-header-row td:first-child {
-    color: var(--color-supporting);
+    color: var(--color-accent); /* New color #57B2B8 */
+    font-weight: 700;
+}
+
+.report-table .highlight-row:last-child {
+    border-bottom: 3px double var(--color-primary);
 }
