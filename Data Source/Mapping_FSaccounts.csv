@@ -1,6 +1,5 @@
 ﻿FS,Account_ref,Account,Account_ID from,Account_ID to,Summary Grouping,Debit/Credit,Order_IS,Order_BS,Order_CF,Calculation_Formula
-Income Statement,rev_1,Income,4140-0000,4910-0000,Revenue,Credit,100,,100,
-Total,rev_total,Total Income,,,,,,,199,sum of rev_1
+Income Statement,rev_total,Total Income,4140-0000,4910-0000,Revenue,Credit,100,,100,
 Income Statement,exp_1,Recoverable Expense,5110-0000,5820-0000,Expenses,Debit,210,,200,
 Income Statement,exp_2,Property Expense,6210-0000,6880-0000,Expenses,Debit,220,,210,
 Income Statement,exp_3,Corporate Expense,7100-0000,7989-9999,Expenses,Debit,230,,220,
