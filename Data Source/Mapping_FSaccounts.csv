@@ -7,9 +7,9 @@ Total,exp_total,Total Expense,,,,,,,299,exp_1+exp_2+exp_3
 Total,noi,Net Operating Income,,,,,,,399,rev_total - exp_total
 Income Statement,other_1,Other Income,8110-0000,8800-0000,Other Income,Credit,190,,400,
 Income Statement,other_2,Other Expenses,9210-0000,9900-0000,Other Expenses,Debit,290,,410,
-Total,ni,Net Income,,,,,,,499,
+Total,ni,Net Income,,,,,,,499,noi+other_1 - other_2
 Balance Sheet,adj_1,Accumulated Depreciation,1730-0000,1785-0000,"Contra Asset
-",Credit,,220,500,noi+other_1 - other_2
+",Credit,,220,500,
 Balance Sheet,adj_2,Accumulated Amortization,1786-0000,1789-0000,"Contra Asset
 ",Credit,,230,510,
 Balance Sheet,adj_3,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,520,
