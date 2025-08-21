@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windfield Real Estate Financials</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <style>
+        :root {
+            --color-primary: #1E424A;
+            --color-secondary: #3A878C;
+            --color-accent: #57B2B8;
+            --color-supporting: #5C7C9E;
+            --color-light-bg: #f8fafc;
+            --color-white: #ffffff;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-600: #475569;
+            --color-gray-800: #1e293b;
+            --color-highlight: #e0f2fe;
+            --color-success: #10b981;
+            --color-error: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--color-light-bg); color: var(--color-gray-800); font-size: 16px; }
+        
+        /* --- NEW: Sticky Header & Nav --- */
+        .header { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); color: white; padding: 1.5rem 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .header h1 { font-size: 2.25rem; font-weight: 300; }
+        .nav-container { background: var(--color-white); border-bottom: 3px solid var(--color-accent); box-shadow: 0 2px 4px rgba(0,0,0,0.06); position: sticky; top: 97px; /* Adjust based on header height */ z-index: 100; }
+        .container { max-width: 1600px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        /* Navigation */
+        .nav-tabs { display: flex; max-width: 1600px; margin: 0 auto; padding: 0 1rem; }
+        .nav-tab { background: none; border: none; padding: 1rem 1.5rem; cursor: pointer; font-size: 1rem; font-weight: 500; color: var(--color-gray-600); border-bottom: 3px solid transparent; transition: all 0.2s ease; white-space: nowrap; }
+        .nav-tab:hover { background-color: var(--color-gray-100); color: var(--color-secondary); }
+        .nav-tab.active { color: var(--color-primary); border-bottom-color: var(--color-accent); }
+        .nav-dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; background-color: var(--color-white); min-width: 240px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 10; border-radius: 8px; border: 1px solid var(--color-gray-200); overflow: hidden; margin-top: -1px; }
+        .dropdown-content button { color: var(--color-gray-800); padding: 12px 20px; display: block; background: none; border: none; width: 100%; text-align: left; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+        .dropdown-content button:hover { background-color: var(--color-gray-100); color: var(--color-primary); }
+        .nav-dropdown:hover .dropdown-content { display: block; }
+
+        /* Controls & Forms */
+        .controls { background: var(--color-white); padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 2rem; border-left: 4px solid var(--color-accent); }
+        .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; align-items: end; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-gray-800); font-size: 0.9rem; }
+        select, input, .btn { padding: 0.75rem; border: 1px solid var(--color-gray-200); border-radius: 6px; font-size: 1rem; transition: all 0.2s ease; background-color: var(--color-white); }
+        
+        /* Cards, Tables, Charts */
+        .card { background: var(--color-white); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 2rem; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; background-color: var(--color-gray-100); color: var(--color-primary); padding: 1rem 1.5rem; font-weight: 600; border-bottom: 1px solid var(--color-gray-200); }
+        .card-body { padding: 1.5rem; }
+        .table-scroll-container { max-height: 480px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid var(--color-gray-200); font-size: 0.9rem; white-space: nowrap; }
+        th { background-color: var(--color-gray-100); font-weight: 600; position: sticky; top: 0; z-index: 1; }
+        tbody tr:hover { background-color: #f7feff; }
+        .highlight-row { background-color: var(--color-highlight) !important; font-weight: 500; }
+        .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+        
+        /* File Status List */
+        .file-status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.5rem 1.5rem; list-style: none; margin-top: 1rem; padding: 1rem; background-color: var(--color-gray-100); border-radius: 6px; }
+        .file-status-grid li { display: flex; align-items: center; font-size: 0.9rem; }
+        .status-icon { margin-right: 0.75rem; width: 20px; height: 20px; flex-shrink: 0; }
+        .status-icon.success { color: var(--color-success); }
+        .status-icon.error { color: var(--color-error); }
+
+        /* General Helpers */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .loading { text-align: center; padding: 3rem; color: var(--color-gray-600); font-size: 1.1rem; }
+        .note { background-color: var(--color-gray-100); padding: 1rem; border-radius: 6px; font-size: 0.9rem; border-left: 4px solid var(--color-supporting); }
+        
+        @media (max-width: 1024px) { .chart-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header"><h1>Windfield Real Estate Financials</h1></header>
+
+    <nav class="nav-container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('home', this)">Home</button>
+            <div class="nav-dropdown">
+                <button class="nav-tab">Financial Statements ▼</button>
+                <div class="dropdown-content">
+                    <button onclick="showTab('trial-balance', this)">Trial Balance</button>
+                    <button onclick="showTab('income-statement', this)">Income Statement</button>
+                    <button onclick="showTab('balance-sheet', this)">Balance Sheet</button>
+                </div>
+            </div>
+            <div class="nav-dropdown">
+                <button class="nav-tab">Cashflow ▼</button>
+                <div class="dropdown-content">
+                    <button onclick="showTab('rent-roll', this)">Rent Roll</button>
+                    <button onclick="showTab('loan-info', this)">Loan Information</button>
+                    <button onclick="showTab('mortgage-amortization', this)">Mortgage Amortization</button>
+                </div>
+            </div>
+            <button class="nav-tab" onclick="showTab('settings', this)">Settings</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="home" class="tab-content active">
+            <div class="controls">
+                <div class="controls-grid">
+                    <div class="form-group"><label for="globalProperty">Property:</label><select id="globalProperty" onchange="renderHomeView()"></select></div>
+                    <div class="form-group"><label for="homeMonth">Month:</label><select id="homeMonth" onchange="renderHomeView()"></select></div>
+                    <div class="form-group"><label for="homeYear">Year:</label><select id="homeYear" onchange="renderHomeView()"></select></div>
+                </div>
+            </div>
+            <div id="homeContent"><div class="loading">Please go to the 'Settings' tab to select your data folder.</div></div>
+        </div>
+
+        <div id="trial-balance" class="tab-content"><div class="card"><div class="card-header">Trial Balance</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="income-statement" class="tab-content"><div class="card"><div class="card-header">Income Statement</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="balance-sheet" class="tab-content"><div class="card"><div class="card-header">Balance Sheet</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="rent-roll" class="tab-content"><div class="card"><div class="card-header">Rent Roll</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="loan-info" class="tab-content"><div class="card"><div class="card-header">Loan Information</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+        <div id="mortgage-amortization" class="tab-content"><div class="card"><div class="card-header">Mortgage Amortization</div><div class="card-body loading">Content will be built in the next phase.</div></div></div>
+
+        <div id="settings" class="tab-content">
+             <div class="controls">
+                <div class="form-group">
+                    <label for="fileInput">Select Source Folder:</label>
+                    <input type="file" id="fileInput" webkitdirectory directory multiple>
+                </div>
+                <div class="note">
+                    <p><b>Status:</b> <span id="loadingStatus">Awaiting file selection.</span></p>
+                    <ul id="fileStatusContainer" class="file-status-grid"></ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<script>
+    // --- GLOBAL STATE & CONFIGURATION ---
+    const appData = {};
+    const chartInstances = {};
+    const FILE_NAMES = {
+        PROPERTIES: 'properties.csv', TRIAL_BALANCE: 'trial_balance.csv',
+        RENT_ROLL_M: 'rentroll_monthly.csv', RENT_ROLL_A: 'rentroll_annual.csv',
+        LOANS: 'loans.csv', LOAN_INFO: 'loan_information.csv',
+        CHART_OF_ACCOUNTS: 'chart_of_accounts.csv'
+    };
+    const REQUIRED_FILES = Object.values(FILE_NAMES);
+    const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        initializeFileStatus();
+    });
+
+    // --- NAVIGATION ---
+    function showTab(tabId, element) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+        document.getElementById(tabId).style.display = 'block';
+        
+        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        const parentDropdown = element.closest('.nav-dropdown');
+        if (parentDropdown) {
+            parentDropdown.querySelector('.nav-tab').classList.add('active');
+        } else {
+            element.classList.add('active');
+        }
+    }
+
+    // --- FILE HANDLING ---
+    function initializeFileStatus() {
+        const container = document.getElementById('fileStatusContainer');
+        container.innerHTML = '';
+        REQUIRED_FILES.forEach(fileName => {
+            const li = document.createElement('li');
+            li.id = `status-${fileName.replace(/\./g, '_')}`;
+            li.innerHTML = `<svg class="status-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>${fileName}</span>`;
+            container.appendChild(li);
+        });
+    }
+
+    function updateFileStatus(fileName, isLoaded) {
+        const li = document.getElementById(`status-${fileName.replace(/\./g, '_')}`);
+        if (li) {
+            const icon = isLoaded 
+                ? `<svg class="status-icon success" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>`
+                : `<svg class="status-icon error" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>`;
+            li.children[0].outerHTML = icon;
+        }
+    }
+
+    async function handleFileSelect(event) {
+        const files = event.target.files;
+        if (!files.length) return;
+        initializeFileStatus();
+
+        const loadingStatus = document.getElementById('loadingStatus');
+        loadingStatus.textContent = `Loading ${files.length} files...`;
+        document.getElementById('homeContent').innerHTML = `<div class="loading">Processing data...</div>`;
+        showTab('home', document.querySelector('.nav-tab[onclick*="home"]'));
+
+        const filesFound = new Set(Array.from(files).map(f => f.name.toLowerCase()));
+        
+        const filePromises = Array.from(files).map(file => new Promise((resolve, reject) => {
+            const lowerCaseName = file.name.toLowerCase();
+            if (REQUIRED_FILES.includes(lowerCaseName)) {
+                Papa.parse(file, {
+                    header: true, skipEmptyLines: true, dynamicTyping: true,
+                    transformHeader: header => header.trim().toLowerCase().replace(/ /g, '_'),
+                    complete: results => {
+                        updateFileStatus(lowerCaseName, true);
+                        resolve({ name: lowerCaseName, data: results.data });
+                    },
+                    error: err => { updateFileStatus(lowerCaseName, false); reject(err); },
+                });
+            } else { resolve(null); }
+        }));
+
+        try {
+            const results = await Promise.all(filePromises);
+            REQUIRED_FILES.forEach(f => { if (!filesFound.has(f)) updateFileStatus(f, false); });
+            
+            for(const result of results) {
+                if (!result) continue;
+                const key = Object.keys(FILE_NAMES).find(k => FILE_NAMES[k] === result.name);
+                const dataKey = key.toLowerCase().replace(/_([a-z])/g, g => g[1].toUpperCase());
+                appData[dataKey] = result.data;
+            }
+            
+            loadingStatus.textContent = `Successfully processed files on ${new Date().toLocaleString()}`;
+            populateAllFilters();
+            renderHomeView();
+        } catch (error) {
+            loadingStatus.textContent = `Error loading files. Check console for details.`;
+            document.getElementById('homeContent').innerHTML = `<div class="loading" style="color:red;">Error loading files.</div>`;
+            console.error("File parsing error:", error);
+        }
+    }
+
+    // --- FILTERS & RENDERING ---
+    function populateAllFilters() {
+        const properties = appData.properties.map(p => ({ id: p.property_id, name: p.properties }))
+            .filter(p => p.name).sort((a,b) => a.name.localeCompare(b.name));
+        
+        const globalPropSelect = document.getElementById('globalProperty');
+        globalPropSelect.innerHTML = '<option value="all">All Properties</option>';
+        properties.forEach(p => globalPropSelect.innerHTML += `<option value="${p.id}">${p.name}</option>`);
+
+        const years = [...new Set(appData.trialBalance.map(r => r.year))].filter(Boolean).sort((a,b) => b-a);
+        const yearSelect = document.getElementById('homeYear');
+        yearSelect.innerHTML = '<option value="all">All Years</option>';
+        years.forEach(y => yearSelect.innerHTML += `<option value="${y}">${y}</option>`);
+
+        const monthSelect = document.getElementById('homeMonth');
+        monthSelect.innerHTML = '<option value="all">All Months</option>';
+        MONTH_NAMES.forEach((name, i) => monthSelect.innerHTML += `<option value="${i + 1}">${name}</option>`);
+    }
+
+    function renderHomeView() {
+        const selectedGlobalPropId = document.getElementById('globalProperty').value;
+        const selectedLocalState = document.getElementById('propStateFilter')?.value || 'all';
+        const selectedYear = document.getElementById('homeYear').value;
+        const selectedMonth = document.getElementById('homeMonth').value;
+
+        let tbData = appData.trialBalance;
+        if (selectedYear !== 'all') tbData = tbData.filter(r => r.year == selectedYear);
+        if (selectedMonth !== 'all') {
+            const monthName = MONTH_NAMES[selectedMonth - 1];
+            tbData = tbData.filter(r => r.month === monthName);
+        }
+        
+        const propertiesForTable = selectedLocalState === 'all' ? appData.properties : appData.properties.filter(p => p.state === selectedLocalState);
+        
+        const tableBody = document.createElement('tbody');
+        propertiesForTable.forEach(prop => {
+            const propTB = tbData.filter(r => r.property_id == prop.property_id);
+            
+            const safeSum = (arr) => arr.reduce((sum, item) => sum + (Number(item.ending_balance) || 0), 0);
+            
+            const totalIncome = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'revenue')) * -1;
+            const totalOperatingExpense = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'expense'));
+            const recoverableExp = safeSum(propTB.filter(r => r.class?.toLowerCase() === 'recoverable expense'));
+            const propertyExp = safeSum(propTB.filter(r => r.class?.toLowerCase() === 'property expense'));
+            const corporateExp = safeSum(propTB.filter(r => r.class?.toLowerCase() === 'corporate expense'));
+            const otherIncome = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'other income')) * -1;
+            const otherExpense = safeSum(propTB.filter(r => r.summary_grouping?.toLowerCase() === 'other expense'));
+            
+            const noi = totalIncome - totalOperatingExpense;
+            const netIncome = noi + otherIncome - otherExpense;
+
+            const isHighlighted = (prop.property_id == selectedGlobalPropId);
+            const highlightClass = isHighlighted ? 'highlight-row' : '';
+
+            tableBody.innerHTML += `<tr class="${highlightClass}">
+                <td><b>${prop.properties}</b></td><td>${prop.state || 'N/A'}</td><td>${formatCurrency(totalIncome)}</td>
+                <td>${formatCurrency(totalOperatingExpense)}</td><td>${formatCurrency(recoverableExp)}</td>
+                <td>${formatCurrency(propertyExp)}</td><td>${formatCurrency(corporateExp)}</td>
+                <td><b>${formatCurrency(noi)}</b></td><td><b>${formatCurrency(netIncome)}</b></td>
+            </tr>`;
+        });
+        
+        const homeContentHTML = `
+            <div class="card">
+                <div class="card-header">
+                    <span>Properties Overview</span>
+                    <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.5rem;">
+                        <label for="propStateFilter" style="margin-bottom: 0;">State:</label>
+                        <select id="propStateFilter" onchange="renderHomeView()"></select>
+                    </div>
+                </div>
+                <div class="table-scroll-container">
+                    <table>
+                        <thead><tr><th>Property</th><th>State</th><th>Total Income</th><th>Total Expenses</th><th>Recoverable</th><th>Property</th><th>Corporate</th><th>NOI</th><th>Net Income</th></tr></thead>
+                        <tbody>${tableBody.innerHTML || '<tr><td colspan="9" class="loading">No data for selected filters.</td></tr>'}</tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-grid">
+                <div class="card"><div class="card-header">Revenue Trends</div><div class="card-body"><canvas id="revenueTrendChart"></canvas></div></div>
+                <div class="card"><div class="card-header">NOI Comparison by Property</div><div class="card-body"><canvas id="noiCompareChart"></canvas></div></div>
+                <div class="card"><div class="card-header">Expense Breakdown</div><div class="card-body"><canvas id="expenseBreakdownChart"></canvas></div></div>
+            </div>`;
+        document.getElementById('homeContent').innerHTML = homeContentHTML;
+        
+        const homeStateSelect = document.getElementById('propStateFilter');
+        const states = [...new Set(appData.properties.map(p => p.state))].filter(Boolean).sort();
+        homeStateSelect.innerHTML = '<option value="all">All States</option>';
+        states.forEach(s => homeStateSelect.innerHTML += `<option value="${s}">${s}</option>`);
+        homeStateSelect.value = selectedLocalState;
+
+        // Render new charts
+        renderRevenueTrendChart(tbData, selectedGlobalPropId);
+        renderNoiCompareChart(tbData, selectedGlobalPropId);
+        renderExpenseBreakdownChart(tbData, selectedGlobalPropId);
+    }
+    
+    // --- NEW CHART RENDERING FUNCTIONS ---
+    function renderRevenueTrendChart(data, selectedPropId) {
+        if(chartInstances.revenue) chartInstances.revenue.destroy();
+        const ctx = document.getElementById('revenueTrendChart').getContext('2d');
+        
+        const chartData = selectedPropId === 'all' ? data : data.filter(r => r.property_id == selectedPropId);
+        
+        const monthlyRevenue = {};
+        MONTH_NAMES.forEach(m => monthlyRevenue[m] = 0);
+
+        chartData.filter(r => r.summary_grouping?.toLowerCase() === 'revenue').forEach(r => {
+            if (r.month && MONTH_NAMES.includes(r.month)) {
+                monthlyRevenue[r.month] += (Number(r.ending_balance) || 0) * -1;
+            }
+        });
+
+        chartInstances.revenue = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: MONTH_NAMES,
+                datasets: [{
+                    label: 'Total Revenue',
+                    data: Object.values(monthlyRevenue),
+                    borderColor: 'rgba(58, 135, 140, 1)',
+                    backgroundColor: 'rgba(58, 135, 140, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { plugins: { title: { display: true, text: 'Monthly Revenue Trends' } }, scales: { y: { ticks: { callback: value => formatCurrency(value) } } } }
+        });
+    }
+
+    function renderNoiCompareChart(data, highlightedPropId) {
+        if(chartInstances.noi) chartInstances.noi.destroy();
+        const ctx = document.getElementById('noiCompareChart').getContext('2d');
+        
+        const noiByProperty = {};
+        appData.properties.forEach(p => {
+            const propTB = data.filter(r => r.property_id == p.property_id);
+            const totalIncome = propTB.filter(r => r.summary_grouping?.toLowerCase() === 'revenue').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0) * -1;
+            const totalExpense = propTB.filter(r => r.summary_grouping?.toLowerCase() === 'expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+            noiByProperty[p.properties] = totalIncome - totalExpense;
+        });
+
+        const sortedProperties = Object.entries(noiByProperty).sort((a,b) => b[1] - a[1]);
+        const highlightedProp = appData.properties.find(p => p.property_id == highlightedPropId);
+        
+        chartInstances.noi = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sortedProperties.map(p => p[0]),
+                datasets: [{
+                    label: 'NOI',
+                    data: sortedProperties.map(p => p[1]),
+                    backgroundColor: sortedProperties.map(p => p[0] === highlightedProp?.properties ? 'rgba(29, 78, 216, 0.8)' : 'rgba(58, 135, 140, 0.7)'),
+                }]
+            },
+            options: { indexAxis: 'y', plugins: { title: { display: true, text: 'NOI Comparison by Property' } }, scales: { x: { ticks: { callback: value => formatCurrency(value) } } } }
+        });
+    }
+
+    function renderExpenseBreakdownChart(data, selectedPropId) {
+        if(chartInstances.expense) chartInstances.expense.destroy();
+        const ctx = document.getElementById('expenseBreakdownChart').getContext('2d');
+
+        const chartData = selectedPropId === 'all' ? data : data.filter(r => r.property_id == selectedPropId);
+        
+        const recoverable = chartData.filter(r => r.class?.toLowerCase() === 'recoverable expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+        const property = chartData.filter(r => r.class?.toLowerCase() === 'property expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+        const corporate = chartData.filter(r => r.class?.toLowerCase() === 'corporate expense').reduce((s, r) => s + (Number(r.ending_balance) || 0), 0);
+
+        chartInstances.expense = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Recoverable', 'Property', 'Corporate'],
+                datasets: [{
+                    data: [recoverable, property, corporate],
+                    backgroundColor: ['#57B2B8', '#5C7C9E', '#3A878C']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Expense Breakdown' } } }
+        });
+    }
+    
+    // --- UTILITY ---
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(isNaN(value) ? 0 : value);
+    }
+</script>
+</body>
+</html>
