@@ -14,7 +14,7 @@ Balance Sheet,adj_2,Accumulated Amortization,1786-0000,1789-0000,"Contra Asset
 ",Credit,,230,510,
 Balance Sheet,adj_3,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,520,
 Total,adj_total,Adjustments,,,,,,,599,adj_1+adj_2+adj_3
-Total,cf,Cashflow,,,,,,,699,ni + adj_1+adj_2 - adj_3
+Total,cf,Cashflow,,,,,,,699,ni+adj_total
 Balance Sheet,,Operating Cash Accounts,1100-0000,1145-0000,Current Asset,Debit,,100,,
 Balance Sheet,,Current Assets,1150-0000,1210-0000,Current Asset,Debit,,110,,
 Balance Sheet,,Other Current Asset,1220-0000,1613-0000,Other Current Asset,Debit,,120,,
