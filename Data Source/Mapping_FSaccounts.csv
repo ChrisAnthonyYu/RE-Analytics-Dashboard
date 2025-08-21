@@ -1,11 +1,6 @@
 ﻿FS,Account_ref,Account,Account_ID from,Account_ID to,Summary Grouping,Debit/Credit,Order_IS,Order_BS,Order_CF,Calculation_Formula
-Income Statement,rev_1,Commercial Rent Income,4140-0000,4175-0000,Revenue,Credit,100,,100,
-Income Statement,rev_2,Commercial Brokerage Income,4200-0000,4220-0000,,,,,110,
-Income Statement,rev_3,Management And Development Fee Income,4300-0000,4360-0000,,,,,120,
-Income Statement,rev_4,Potential Rent Income,4400-0000,4415-0000,,,,,130,
-Income Statement,rev_5,Residential Income,4420-0000,4500-0000,,,,,140,
-Income Statement,rev_6,Miscellaneous Income,4510-0000,4910-0000,,,,,150,
-Total,rev_total,Total Income,,,,,,,199,rev_1+rev_2+rev_3+rev_4+rev_5+rev_6
+Income Statement,rev_1,Income,4140-0000,4910-0000,Revenue,Credit,100,,100,
+Total,rev_total,Total Income,,,,,,,199,sum of rev_1
 Income Statement,exp_1,Recoverable Expense,5110-0000,5820-0000,Expenses,Debit,210,,200,
 Income Statement,exp_2,Property Expense,6210-0000,6880-0000,Expenses,Debit,220,,210,
 Income Statement,exp_3,Corporate Expense,7100-0000,7989-9999,Expenses,Debit,230,,220,
