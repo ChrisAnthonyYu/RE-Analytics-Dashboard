@@ -23,6 +23,8 @@ Balance Sheet,cff_contrib,Owners Equity - Contribution,3200-0000,3200-0026,,Cred
 Balance Sheet,cff_draw,Owners Equity - Distribution,3400-0000,3400-0026,,Credit,,,580,
 Total,adj_total,Adjustments,,,,,,,599,cfo_dep+cfo_amort+cfo_ca+cff_cl+cfo_ncl+cfi_ppe+cfi_other+cff_contrib+cff_draw
 Total,cf,Cashflow,,,,,,,699,ni+adj_total
+,cash,Cash Accounts,11000-0000,1145-0000,Cash Accounts,,,,,
+,cash_res,Cash Reserves,1150-0000,1199-9990,Cash Reserves,,,,,
 Balance Sheet,,Operating Cash Accounts,1100-0000,1145-0000,Current Asset,Debit,,100,,
 Balance Sheet,,Current Assets,1150-0000,1210-0000,Current Asset,Debit,,110,,
 Balance Sheet,,Other Current Asset,1220-0000,1613-0000,Other Current Asset,Debit,,120,,
