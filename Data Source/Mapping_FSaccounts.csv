@@ -8,12 +8,20 @@ Total,noi,Net Operating Income,,,,,,,399,rev_total - exp_total
 Income Statement,other_1,Other Income,8110-0000,8800-0000,Other Income,Credit,190,,400,
 Income Statement,other_2,Other Expenses,9210-0000,9900-0000,Other Expenses,Debit,290,,410,
 Total,ni,Net Income,,,,,,,499,noi+other_1 - other_2
-Balance Sheet,adj_1,Accumulated Depreciation,1730-0000,1785-0000,"Contra Asset
+Balance Sheet,cfo_dep,Accumulated Depreciation,1730-0000,1785-0000,"Contra Asset
 ",Credit,,220,500,
-Balance Sheet,adj_2,Accumulated Amortization,1786-0000,1789-0000,"Contra Asset
+Balance Sheet,cfo_amort,Accumulated Amortization,1786-0000,1789-0000,"Contra Asset
 ",Credit,,230,510,
-Balance Sheet,adj_3,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,520,
-Total,adj_total,Adjustments,,,,,,,599,adj_1+adj_2+adj_3
+Balance Sheet,cfo_ca,Current Assets,1210-0000,1613-0000,"Current Assets
+",Debit,,,520,
+Balance Sheet,cff_cl,Current Liabilities,2100-0000,2310-0000,"Current Liabilities
+",Credit,,,530,
+Balance Sheet,cfo_ncl,Non Current Liabilities,2510-0000,2699-9999,Non Current Liabilities,Credit,,310,540,
+Balance Sheet,cfi_ppe,PPE,1620-0000,1688-0000,PPE,Debit,,,550,
+Balance Sheet,cfi_other,Investments - Equity Method,1800-0000,1860-0000,,Credit,,,560,
+Balance Sheet,cff_contrib,Owners Equity - Contribution,3200-0000,3200-0026,,Credit,,,570,
+Balance Sheet,cff_draw,Owners Equity - Distribution,3400-0000,3400-0026,,Credit,,,580,
+Total,adj_total,Adjustments,,,,,,,599,cfo_dep+cfo_amort+cfo_ca+cff_cl+cfo_ncl+cfi_ppe+cfi_other+cff_contrib+cff_draw
 Total,cf,Cashflow,,,,,,,699,ni+adj_total
 Balance Sheet,,Operating Cash Accounts,1100-0000,1145-0000,Current Asset,Debit,,100,,
 Balance Sheet,,Current Assets,1150-0000,1210-0000,Current Asset,Debit,,110,,
