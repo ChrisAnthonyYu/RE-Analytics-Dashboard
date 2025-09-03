@@ -9,7 +9,10 @@
 </head>
 <body>
   <div id="sticky-header-container">
-    <header class="header"><h1>Windfield Real Estate Financials</h1></header>
+    <header class="header">
+      <img src="https://raw.githubusercontent.com/ChrisAnthonyYu/RE-Analytics-Dashboard/main/Asset/WRE%20logo.png" alt="Windfield Real Estate Logo" class="header-logo">
+      <h1 class="header-title">Windfield Real Estate Financials</h1>
+    </header>
     <div class="filters-bar"><div class="filters-inner"><div class="controls"><div class="controls-grid"><div class="form-group"><label for="globalProperty">Property</label><select id="globalProperty" onchange="onGlobalFiltersChange()"></select></div><div class="form-group"><label for="globalMonth">Month</label><select id="globalMonth" onchange="onGlobalFiltersChange()"></select></div><div class="form-group"><label for="globalYear">Year</label><select id="globalYear" onchange="onGlobalFiltersChange()"></select></div></div></div></div></div>
     <nav class="nav-container"><div class="nav-tabs"><button class="nav-tab active" onclick="showTab('home', this)">Home</button><button class="nav-tab" onclick="showTab('financial-statements', this)">Financial Statements</button><button class="nav-tab" onclick="showTab('cashflow-overview', this)">Cashflow</button><button class="nav-tab" onclick="showTab('settings', this)">Settings</button></div></nav>
     <div class="sub-nav-container" id="cashflowSubNav" style="display:none;"><div class="nav-tabs" style="padding: 0 1.25rem;"><button class="sub-nav-tab active" onclick="showCashflowSubTab('cf-overview', this)">Overview</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-cashflow', this)">Cashflow Report</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-loan-schedule', this)">Loan Schedule</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-rent-roll', this)">Rent Roll</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-interest-sensitivity', this)">Interest Rate Sensitivity</button></div></div>
@@ -63,7 +66,6 @@
                     <div class="card-header">Interest Rate Sensitivity Analysis</div>
                     <div class="card-body">
                         <div id="interestSensitivityContainer">
-                            <!-- Existing DSCR card structure -->
                             <div class="card dscr-card">
                                 <div class="card-header">Debt Service Coverage Ratio (DSCR)</div>
                                 <div class="card-body dscr-card-body">
@@ -79,12 +81,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- User input for interest rate -->
                             <div class="dscr-input-container">
                                 <label for="userInputRate">User Input Interest Rate (%):</label>
                                 <input type="number" id="userInputRate" step="0.01" onchange="renderInterestRateSensitivity()" onkeyup="renderInterestRateSensitivity()">
                             </div>
-                            <!-- NEW: Container for loan analysis inputs -->
                             <div id="analysisInputsContainer" class="analysis-inputs" style="display: none;"></div>
                             
                             <div id="sensitivityTableContainer" class="card" style="display:none;">
@@ -104,3 +104,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
