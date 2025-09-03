@@ -5,15 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Windfield Real Estate Financials</title>
   
-  <!-- This line links to your CSS file -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="sticky-header-container">
-    <header class="header"><h1>Windfield Real Estate Financials</h1></header>
+    <header class="header">
+      <img src="https://raw.githubusercontent.com/ChrisAnthonyYu/RE-Analytics-Dashboard/main/Asset/WRE%20logo.png" alt="Windfield Real Estate Logo" class="header-logo">
+      <h1 class="header-title">Windfield Real Estate Financials</h1>
+    </header>
     <div class="filters-bar"><div class="filters-inner"><div class="controls"><div class="controls-grid"><div class="form-group"><label for="globalProperty">Property</label><select id="globalProperty" onchange="onGlobalFiltersChange()"></select></div><div class="form-group"><label for="globalMonth">Month</label><select id="globalMonth" onchange="onGlobalFiltersChange()"></select></div><div class="form-group"><label for="globalYear">Year</label><select id="globalYear" onchange="onGlobalFiltersChange()"></select></div></div></div></div></div>
     <nav class="nav-container"><div class="nav-tabs"><button class="nav-tab active" onclick="showTab('home', this)">Home</button><button class="nav-tab" onclick="showTab('financial-statements', this)">Financial Statements</button><button class="nav-tab" onclick="showTab('cashflow-overview', this)">Cashflow</button><button class="nav-tab" onclick="showTab('settings', this)">Settings</button></div></nav>
-    <div class="sub-nav-container" id="cashflowSubNav" style="display:none;"><div class="nav-tabs" style="padding: 0 1.25rem;"><button class="sub-nav-tab active" onclick="showCashflowSubTab('cf-overview', this)">Overview</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-cashflow', this)">Cashflow</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-rentroll', this)">Rent Roll</button></div></div>
+    <div class="sub-nav-container" id="cashflowSubNav" style="display:none;"><div class="nav-tabs" style="padding: 0 1.25rem;"><button class="sub-nav-tab active" onclick="showCashflowSubTab('cf-overview', this)">Overview</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-cashflow', this)">Cashflow Report</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-loan-schedule', this)">Loan Schedule</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-rent-roll', this)">Rent Roll</button><button class="sub-nav-tab" onclick="showCashflowSubTab('cf-interest-sensitivity', this)">Interest Rate Sensitivity</button></div></div>
   </div>
 
   <main class="container">
@@ -22,19 +24,84 @@
     <section id="cashflow-overview" class="tab-content">
        <div id="cfMessage" class="loading card" style="display:block;">Please select a property from the top filter bar to view Cashflow Analytics.</div>
        <div id="cfContentContainer" style="display:none;">
-            <div id="cf-overview" class="sub-tab-content active"><div class="kpi-grid"><div class="card"><div class="card-header">Property Details</div><div class="card-body kpi-item"><p><strong>Property Name:</strong> <span id="cf-property-name">-</span></p><p><strong>Address:</strong> <span id="cf-property-address">-</span></p><p><strong>Property Type:</strong> <span id="cf-property-type">-</span></p><p><strong>Owner:</strong> <span id="cf-property-owner">-</span></p></div></div><div class="card"><div class="card-header">Loan Information</div><div class="card-body"><ul id="cf-loans" class="loan-list"></ul></div></div></div></div>
-            <div id="cf-cashflow" class="sub-tab-content"><div class="card"><div class="card-header">Cashflow Report</div><div class="card-body"><div id="cashflowReportContainer" class="table-container"></div></div></div></div>
-            <div id="cf-rentroll" class="sub-tab-content"><div class="card"><div class="card-header">Rent Roll</div><div class="card-body loading">Rent Roll data and functionality will be added here.</div></div></div>
+            <div id="cf-overview" class="sub-tab-content active">
+                <div id="overview-kpi-cards" class="kpi-grid five-cols">
+                    </div>
+                 <div class="kpi-grid">
+                    <div class="card info-card"><div class="card-header">Property Details</div><div class="card-body kpi-item"><p><strong>Property Name:</strong> <span id="cf-property-name">-</span></p><p><strong>Address:</strong> <span id="cf-property-address">-</span></p><p><strong>Property Type:</strong> <span id="cf-property-type">-</span></p><p><strong>Owner:</strong> <span id="cf-property-owner">-</span></p></div></div>
+                    <div id="overview-loan-payment-card-container">
+                        </div>
+                </div>
+            </div>
+            <div id="cf-cashflow" class="sub-tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <span>Cashflow Report</span>
+                        <button id="toggleAllBtn" class="btn">Collapse All</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="cashflowReportContainer" class="table-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="cf-loan-schedule" class="sub-tab-content">
+                <div id="loanSummaryCardContainer">
+                     </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span>Loan Amortization Schedule</span>
+                        <button id="toggleScheduleBtn" class="btn">Expand All</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="loanScheduleContainer" class="table-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="cf-rent-roll" class="sub-tab-content">
+                <div id="rentRollCardsContainer" class="kpi-grid three-cols">
+                    </div>
+            </div>
+            <div id="cf-interest-sensitivity" class="sub-tab-content">
+                <div class="card">
+                    <div class="card-header">Interest Rate Sensitivity Analysis</div>
+                    <div class="card-body">
+                        <div id="interestSensitivityContainer">
+                            <div class="card dscr-card">
+                                <div class="card-header">Debt Service Coverage Ratio (DSCR)</div>
+                                <div class="card-body dscr-card-body">
+                                    <div class="dscr-value-container">
+                                        <span class="dscr-label">DSCR</span>
+                                        <span id="dscr-value" class="dscr-main-value">0.00</span>
+                                    </div>
+                                    <div class="dscr-details-container">
+                                        <div class="dscr-item"><span class="label">NOI:</span><span class="value" id="dscr-noi">-</span></div>
+                                        <div class="dscr-item"><span class="label">Debt Service:</span><span class="value" id="dscr-debt-service">-</span></div>
+                                        <div class="dscr-item sub-item"><span class="label">Principal:</span><span class="value" id="dscr-principal">-</span></div>
+                                        <div class="dscr-item sub-item"><span class="label">Interest:</span><span class="value" id="dscr-interest">-</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dscr-input-container">
+                                <label for="userInputRate">User Input Interest Rate (%):</label>
+                                <input type="number" id="userInputRate" step="0.01" onchange="renderInterestRateSensitivity()" onkeyup="renderInterestRateSensitivity()">
+                            </div>
+                            <div id="analysisInputsContainer" class="analysis-inputs" style="display: none;"></div>
+                            
+                            <div id="sensitivityTableContainer" class="card" style="display:none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
        </div>
     </section>
     <section id="settings" class="tab-content"><div class="card"><div class="card-header">Manage Years</div><div class="card-body"><input type="number" id="newYearInput" placeholder="e.g., 2026"><button class="btn" onclick="handleAddYear()">Add Year</button><p id="settingsStatus"></p></div></div></section>
   </main>
 
-  <!-- External libraries first -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <!-- This line links to your JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
+
